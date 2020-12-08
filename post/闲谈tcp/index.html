@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="author" content="Dr.Zou" />
     <meta name="description" content="" />
-    <link rel="stylesheet" href="http://example.org/css/main.min.88e7083eff65effb7485b6e6f38d10afbec25093a6fac42d734ce9024d3defbd.css" />
+    <link rel="stylesheet" href="https://zoulingbin.github.io/css/main.min.88e7083eff65effb7485b6e6f38d10afbec25093a6fac42d734ce9024d3defbd.css" />
 
     
     <meta name="twitter:card" content="summary"/>
@@ -29,7 +29,7 @@
   TCP连接： TCP报文首部：  源端口号：发送端端口号，占16bit。TCP协议通过使用”端口”来标识源端和目标端的应用进程。端口号可以使用0到65535之间的任何数字。 目标端口号：接收端的端口号。在收到服务请求时，操作系统动态地为客户端的应用程序分配端口号。在服务器端，每种服务在”众所周知的端口”（Well-Know Port）为用户提供服务。 序列号：序列号表示的是报文段数据中的第一个字节号，ACK表示确认号，该确认号的发送方期待接收的下一个序列号，即最后被成功接收的数据字节序列号加1，这个字段只有在ACK位被启用的时候才有效。 确认号：只有ACK标志为1时，确认号字段才有效。它包含目标端所期望收到源端的下一个数据字节。 头部长度字段：TCP 所传输的数据部分应该从 TCP 包的哪个位置开始计算，也可以将其看作 TCP 包的长度，单位为4bit。它指出TCP报文段的数据起始处距离TCP报文段的起始处有多远。 窗口：明确指出了现在允许对方发送的数据量。窗口值经常在动态变化着。窗口指的是发送本报文段的一方的接收窗口（而不是自己的发送窗口） CWR（Congestion Window Reduced）：与后面的ECE都是用于IP首部的ECN字段，为1时通知对方已将拥塞窗口缩小。 ECE（ECN-Echo）：置为1时通知通信对方，从对方到这边的网络有拥堵。 URG（Urgent Flag）：该位为1时，表示包中有需要紧急处理的数据。 ACK（Acknowledgement Flag）：该位为1时，确认应答的字段变为有效。 PSH（Push Flag）：该位为1时，表示需要将收到的数据立即传给上层应用协议，为0时则表示先不上传而是缓存起来。 RST（Reset Flag）：该位为1时，表示TCP连接中出现异常必须强制断开连接。 SYN（Synchronize Flag）：该位为1时，表示希望建立连接，并在序列号字段进行序列号初始值的设定。 FIN（Fin Flag）：该位为1时，表示今后不会再有数据发送，希望断开连接。 窗口大小：用于通知从相同 TCP 首部的确认应答号所指位置开始能够接收的数据大小。 校验值：TCP头部和TCP数据进行校验和计算，并由目标端进行验证。 紧急指针：只有在URG 控制位为1时有效，该字段数值表示本报文段中紧急数据的指针。  三次握手 客户端和服务端通信前要进行连接，“3次握手”的作用就是双方都能明确自己和对方的收、发能力是正常的。
  第一次握手:客户端发送网络包，服务端收到了。这样服务端就能得出结论：客户端的发送能力、服务端的接收能力是正常的,SYN=1,seq=x。 第二次握手:服务端发包，客户端收到了。这样客户端就能得出结论：服务端的接收、发送能力，客户端的接收、发送能力是正常的，ACK=1,ack=x&#43;1,SYN=1,seq=y。 从客户端的视角来看，我接到了服务端发送过来的响应数据包，说明服务端接收到了我在第一次握手时发送的网络包，并且成功发送了响应数据包，这就说明，服务端的接收、发送能力正常。而另一方面，我收到了服务端的响应数据包，说明我第一次发送的网络包成功到达服务端，这样，我自己的发送和接收能力也是正常的。 第三次握手:客户端发包，服务端收到了。这样服务端就能得出结论：客户端的接收、发送能力，服务端的发送、接收能力是正常的，seq=x&#43;1,ACK=1,ack=y&#43;1。  四次挥手  第一次：客户端请求断开FIN,seq=u。 第二次：服务器确认客户端的断开请求ACK,ack=u&#43;1,seq=v。 第三次：服务器请求断开FIN,seq=w,ACK,ack=u&#43;1。 第四次：客户端确认服务器的断开ACK,ack=w&#43;1,seq=u&#43;1。  " />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="http://example.org/post/%E9%97%B2%E8%B0%88tcp/" />
+<meta property="og:url" content="https://zoulingbin.github.io/post/%E9%97%B2%E8%B0%88tcp/" />
 <meta property="article:published_time" content="2020-12-08T21:00:32+08:00" />
 <meta property="article:modified_time" content="2020-12-08T21:00:32+08:00" />
 
@@ -37,7 +37,7 @@
   </head>
   <body>
     <header class="app-header">
-      <a href="http://example.org/"><img class="app-header-avatar" src="/avatar.jpg" alt="Dr.Zou" /></a>
+      <a href="https://zoulingbin.github.io/"><img class="app-header-avatar" src="/avatar.jpg" alt="Dr.Zou" /></a>
       <h1>zoulingbin</h1>
       <nav class="app-header-menu">
           <a class="app-header-menu-item" href="/">Posts</a>
@@ -80,8 +80,8 @@
   <title>tag</title>
   <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line>
 </svg>
-              <a class="tag" href="http://example.org/tags/tcp/">tcp</a>
-              <a class="tag" href="http://example.org/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
+              <a class="tag" href="https://zoulingbin.github.io/tags/tcp/">tcp</a>
+              <a class="tag" href="https://zoulingbin.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>
         </div>
       </div>
     </header>
