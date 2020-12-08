@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>计算机网络 on zoulingbin</title>
-    <link>https://zoulingbin.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</link>
+    <link>http://example.org/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</link>
     <description>Recent content in 计算机网络 on zoulingbin</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 08 Dec 2020 21:00:32 +0800</lastBuildDate>
     
-	<atom:link href="https://zoulingbin.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://example.org/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>闲谈tcp</title>
-      <link>https://zoulingbin.github.io/post/%E9%97%B2%E8%B0%88tcp/</link>
+      <link>http://example.org/post/%E9%97%B2%E8%B0%88tcp/</link>
       <pubDate>Tue, 08 Dec 2020 21:00:32 +0800</pubDate>
       
-      <guid>https://zoulingbin.github.io/post/%E9%97%B2%E8%B0%88tcp/</guid>
+      <guid>http://example.org/post/%E9%97%B2%E8%B0%88tcp/</guid>
       <description>TCP特点：   TCP是面向连接的传输层协议。在使用TCP协议之前必须先建立TCP连接，在传送数据完毕后，必须释放已经建立的tcp连接。
   TCP提供全双工通信。
   提供可靠交付。
