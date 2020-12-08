@@ -6,18 +6,22 @@
     <description>Recent content in Posts on zoulingbin</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 08 Dec 2020 21:03:44 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 08 Dec 2020 21:30:38 +0800</lastBuildDate>
     
 	<atom:link href="https://zoulingbin.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>图片</title>
-      <link>https://zoulingbin.github.io/post/%E5%9B%BE%E7%89%87/</link>
-      <pubDate>Tue, 08 Dec 2020 21:03:44 +0800</pubDate>
+      <title>链表</title>
+      <link>https://zoulingbin.github.io/post/%E9%93%BE%E8%A1%A8/</link>
+      <pubDate>Tue, 08 Dec 2020 21:30:38 +0800</pubDate>
       
-      <guid>https://zoulingbin.github.io/post/%E5%9B%BE%E7%89%87/</guid>
-      <description></description>
+      <guid>https://zoulingbin.github.io/post/%E9%93%BE%E8%A1%A8/</guid>
+      <description>链表不需要一块连续的内存空间，而是通过指针将一组零散的内存块串联起来使用。 单链表 链表有多种类型，最简单的是单链表，单链表是最原生的链表，其结构如图所示： 单链表中有两个节点比较特殊，分别是第一个结点和最后一个结点。我们通常把第一个结点叫作头结点，把最后一个结点叫作尾结点。其中，头结点用来记录链表的基地址，有了它，我们就可以遍历得到整条链表。而尾结点特殊的地方是：指针不是指向下一个结点，而是指向一个空地址 NULL，表示这是链表上最后一个结点。对单链表而言，理论上来说，插入和删除节点的时间复杂度是 O(1)，查询节点的时间复杂度是 O(n)。
+循环链表 循环链表和单链表的区别是尾节点指向了头结点，从而首尾相连，可用于解决「约瑟夫环」问题。 双向链表 与单链表的区别是双向链表除了有一个指向下一个节点的指针外，还有一个用于指向上一个节点的指针，从而实现通过O(1)复杂度找到上一个节点。正是因为这个节点，使得双向链表在插入、删除节点时比单链表更高效，虽然我们前面已经提到单链表插入、删除时间复杂度已经是 O(1) 了，但是这没有考虑还只是针对插入、删除操作本身而言，以删除为例，删除某个节点后，需要将其前驱节点的指针指向被删除节点的下一个节点，这样，我们还需要获取其前驱节点，在单链表中获取前驱节点的时间复杂度是 O(n)，所以综合来看单链表的删除、插入操作时间复杂度也是 O(n)，而双向链表则不然，它有一个指针指向上一个节点，所以其插入和删除时间复杂度才是真正的 O(1)。
+此外，对于有序链表而言，双向链表的查询效率显然也要高于单链表，不过更优的时间复杂度是靠更差的空间复杂度换取的，双向链表始终需要单链表的两倍空间，但是正如我们之前说的，在 Web 应用中，时间效率优先级更高，所以我们通常都是空间换时间来提高性能，Java 的 LinkedHashMap 底层就用到了双向链表。
+双向循环链表 首尾通过指针连接起来。
+php使用数组模拟实现单链表 class LinkedList { private $list = []; //获取链表指定位置的元素值，从0开始 public function get($index) { $value = null; while(current($this-&amp;gt;list)){ if(key($this-&amp;gt;list)==$index){ $value = current($this-&amp;gt;list); } next($this-&amp;gt;list); } reset($this-&amp;gt;list); return $value; } //在链表指定位置插入值，默认插到链表头部 public function add($value, $index=0) { array_splice($this-&amp;gt;list, $index, 0, $value); } // 从链表指定位置删除元素 public function remove($index) { array_splice($this-&amp;gt;list, $index, 1); } public function isEmpty() { return !</description>
     </item>
     
     <item>
