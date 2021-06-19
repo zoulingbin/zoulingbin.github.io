@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>zoulingbin</title>
-    <link>http://example.org/</link>
-    <description>Recent content on zoulingbin</description>
+    <title>标准库 on zoulingbin</title>
+    <link>http://example.org/tags/%E6%A0%87%E5%87%86%E5%BA%93/</link>
+    <description>Recent content in 标准库 on zoulingbin</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 20 Jun 2021 00:21:11 +0800</lastBuildDate>
     
-	<atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://example.org/tags/%E6%A0%87%E5%87%86%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
