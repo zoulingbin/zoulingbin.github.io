@@ -11,9 +11,7 @@
     <pubDate>Mon, 28 Jun 2021 15:27:17 &#43;0800</pubDate>
     <author>Author</author>
     <guid>https://zoulingbin.github.io/posts/mutex/</guid>
-    <description><![CDATA[mutex架构演进的四个阶段： 初版 “初版”的Mutex使用一个flag来表示锁是否被持有，实现比较简单；后来照顾到新来的goroutine，所以会让新的 goroutine 也尽可能地先获取到锁；那么，接下来就是第三阶段“多给些机会”，照顾新来的和被唤醒的 goroutine；但是这样会带来饥饿问题，所以目前又加入了饥饿的解决方案，也就是第四阶段“解决饥饿”。
-初版的互斥锁
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35  // CAS操作，当时还没有抽象出atomic包  func cas(val *int32, old, new int32) bool func semacquire(*int32) func semrelease(*int32) // 互斥锁的结构，包含两个字段  type Mutex struct { key int32 // 锁是否被持有的标识  sema int32 // 信号量专用，用以阻塞/唤醒goroutine  } // 保证成功在val上增加delta的值  func xadd(val *int32, delta int32) (new int32) { for { v := *val if cas(val, v, v+delta) { return v + delta } } panic(&#34;unreached&#34;) } // 请求锁  func (m *Mutex) Lock() { if xadd(&amp;m.]]></description>
+    <description><![CDATA[鸟窝大佬的go并发编程阅读记录，从初版mutex到第四版的源码分析]]></description>
 </item><item>
     <title>Context源码分析</title>
     <link>https://zoulingbin.github.io/posts/context/</link>
