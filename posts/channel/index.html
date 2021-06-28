@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Channel源码解析 - 邹灵彬的博客</title><meta name="Description" content=""><meta property="og:title" content="Channel源码解析" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://zoulingbin.github.io/posts/channel/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-05-31T17:38:16&#43;08:00" />
+<meta property="article:modified_time" content="2021-05-31T17:38:16&#43;08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Channel源码解析"/>
+<meta name="twitter:description" content=""/>
+<meta name="application-name" content="邹灵彬的博客">
+<meta name="apple-mobile-web-app-title" content="邹灵彬的博客"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://zoulingbin.github.io/posts/channel/" /><link rel="next" href="https://zoulingbin.github.io/posts/context/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Channel源码解析",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/zoulingbin.github.io\/posts\/channel\/"
+        },"genre": "posts","keywords": "Go, 并发编程","wordcount":  279 ,
+        "url": "https:\/\/zoulingbin.github.io\/posts\/channel\/","datePublished": "2021-05-31T17:38:16+08:00","dateModified": "2021-05-31T17:38:16+08:00","publisher": {
+            "@type": "Organization",
+            "name": "Author"},"author": {
+                "@type": "Person",
+                "name": "Author"
+            },"description": ""
+    }
+    </script></head>
+    <body header-desktop="" header-mobile=""><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="邹灵彬的博客">邹灵彬的博客</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="邹灵彬的博客">邹灵彬的博客</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">Channel源码解析</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>Author</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-05-31">2021-05-31</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;279 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;2 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#什么是channel">什么是channel</a></li>
+        <li><a href="#channel-数据结构">channel 数据结构</a></li>
+        <li><a href="#channel相关操作">channel相关操作</a>
+          <ul>
+            <li><a href="#写操作">写操作</a></li>
+            <li><a href="#读操作">读操作</a></li>
+            <li><a href="#关闭">关闭</a></li>
+            <li><a href="#优雅关闭">优雅关闭</a></li>
+            <li><a href="#注意事项">注意事项</a></li>
+          </ul>
+        </li>
+        <li><a href="#reference">reference</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h3 id="什么是channel">什么是channel</h3>
+<p>channel(管道)，go的一种特殊的数据类型，<strong>像是通道（队列），先进先出</strong>，可以通过它们发送类型化的数据在协程之间通信，可以避开所有内存共享导致的坑；通道的通信方式保证了同步性。</p>
+<h3 id="channel-数据结构">channel 数据结构</h3>
+<p><a href="https://github.com/golang/go/blob/master/src/runtime/chan.go#L32" target="_blank" rel="noopener noreffer">runtime/chan.go</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">hchan</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">qcount</span>   <span class="kt">uint</span>           <span class="c1">// total data in the queue
+</span><span class="c1"></span>	<span class="nx">dataqsiz</span> <span class="kt">uint</span>           <span class="c1">// size of the circular queue
+</span><span class="c1"></span>	<span class="nx">buf</span>      <span class="nx">unsafe</span><span class="p">.</span><span class="nx">Pointer</span> <span class="c1">// points to an array of dataqsiz elements
+</span><span class="c1"></span>	<span class="nx">elemsize</span> <span class="kt">uint16</span>
+	<span class="nx">closed</span>   <span class="kt">uint32</span>
+	<span class="nx">elemtype</span> <span class="o">*</span><span class="nx">_type</span> <span class="c1">// element type
+</span><span class="c1"></span>	<span class="nx">sendx</span>    <span class="kt">uint</span>   <span class="c1">// send index
+</span><span class="c1"></span>	<span class="nx">recvx</span>    <span class="kt">uint</span>   <span class="c1">// receive index
+</span><span class="c1"></span>	<span class="nx">recvq</span>    <span class="nx">waitq</span>  <span class="c1">// list of recv waiters
+</span><span class="c1"></span>	<span class="nx">sendq</span>    <span class="nx">waitq</span>  <span class="c1">// list of send waiters
+</span><span class="c1"></span>
+	<span class="c1">// lock protects all fields in hchan, as well as several
+</span><span class="c1"></span>	<span class="c1">// fields in sudogs blocked on this channel.
+</span><span class="c1"></span>	<span class="c1">//
+</span><span class="c1"></span>	<span class="c1">// Do not change another G&#39;s status while holding this lock
+</span><span class="c1"></span>	<span class="c1">// (in particular, do not ready a G), as this can deadlock
+</span><span class="c1"></span>	<span class="c1">// with stack shrinking.
+</span><span class="c1"></span>	<span class="nx">lock</span> <span class="nx">mutex</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>qcount: 当前队列/channel中剩余元素个数</li>
+<li>dataqsiz: 环形队列长度，即可以存放的元素个数</li>
+<li>buf: 环形队列指针</li>
+<li>elemsize: 每个元素的大小</li>
+<li>closed: 标识关闭状态</li>
+<li>elemtype: chan中元素类型</li>
+<li>sendx: 队列下标，指示元素写入时存放到队列中的位置</li>
+<li>recvx: 队列下标，指示元素从队列的该位置读出</li>
+<li>recvq: 等待读消息的goroutine队列</li>
+<li>sendq: 等待写消息的goroutine队列</li>
+<li>lock: 互斥锁(标准库sync/mutex)</li>
+</ul>
+<p>一个channel只能传递一种类型的值，类型信息存储在hchan数据结构中。</p>
+<ul>
+<li><code>elemtype</code>代表类型，用于数据传递过程中的赋值；</li>
+<li><code>elemsize</code>代表类型大小，用于在<code>buf</code>中定位元素位置。</li>
+<li></li>
+</ul>
+<p><a href="https://github.com/golang/go/blob/master/src/runtime/chan.go#L53" target="_blank" rel="noopener noreffer">runtime/chan.go</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">//双向链表
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">waitq</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">first</span> <span class="o">*</span><span class="nx">sudog</span>    
+	<span class="nx">last</span>  <span class="o">*</span><span class="nx">sudog</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><a href="https://github.com/golang/go/blob/master/src/runtime/runtime2.go#L344" target="_blank" rel="noopener noreffer">runtime/runtime2.go</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">sudog</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="c1">// The following fields are protected by the hchan.lock of the
+</span><span class="c1"></span>	<span class="c1">// channel this sudog is blocking on. shrinkstack depends on
+</span><span class="c1"></span>	<span class="c1">// this for sudogs involved in channel ops.
+</span><span class="c1"></span>
+	<span class="nx">g</span> <span class="o">*</span><span class="nx">g</span>    <span class="c1">//goroutine
+</span><span class="c1"></span>    <span class="o">...</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>从上面的信息可以看出channel是由队列，类型信息、goroutine等待队列组成。</p>
+<blockquote>
+<p><strong>环形队列</strong>:</p>
+</blockquote>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://static.sitestack.cn/projects/GoExpertProgramming/chapter01/images/chan-01-circle_queue.png"
+        data-srcset="https://static.sitestack.cn/projects/GoExpertProgramming/chapter01/images/chan-01-circle_queue.png, https://static.sitestack.cn/projects/GoExpertProgramming/chapter01/images/chan-01-circle_queue.png 1.5x, https://static.sitestack.cn/projects/GoExpertProgramming/chapter01/images/chan-01-circle_queue.png 2x"
+        data-sizes="auto"
+        alt="https://static.sitestack.cn/projects/GoExpertProgramming/chapter01/images/chan-01-circle_queue.png"
+        title="https://static.sitestack.cn/projects/GoExpertProgramming/chapter01/images/chan-01-circle_queue.png" /></p>
+<ul>
+<li>dataqsiz指示了队列长度为6，即可缓存6个元素；</li>
+<li>buf指向队列的内存，队列中还剩余两个元素；</li>
+<li>qcount表示队列中还有两个元素；</li>
+<li>sendx指示后续写入的数据存储的位置，取值[0, 6)；</li>
+<li>recvx指示从该位置读取数据, 取值[0, 6)；</li>
+</ul>
+<h3 id="channel相关操作">channel相关操作</h3>
+<h4 id="写操作">写操作</h4>
+<ul>
+<li>如果等待接收队列recvq不为空，说明缓冲区中没有数据或者没有缓冲区，此时直接从<code>recvq</code>取出G,并把数据写入，最后把该G唤醒，结束发送过程；</li>
+<li>如果缓冲区中有空余位置，将数据写入缓冲区，结束发送过程；</li>
+<li>如果缓冲区中没有空余位置，将待发送数据写入G，将当前G加入<code>sendq</code>，进入睡眠，等待被读<code>goroutine</code>唤醒；</li>
+</ul>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://static.sitestack.cn/projects/GoExpertProgramming/chapter01/images/chan-03-send_data.png"
+        data-srcset="https://static.sitestack.cn/projects/GoExpertProgramming/chapter01/images/chan-03-send_data.png, https://static.sitestack.cn/projects/GoExpertProgramming/chapter01/images/chan-03-send_data.png 1.5x, https://static.sitestack.cn/projects/GoExpertProgramming/chapter01/images/chan-03-send_data.png 2x"
+        data-sizes="auto"
+        alt="https://static.sitestack.cn/projects/GoExpertProgramming/chapter01/images/chan-03-send_data.png"
+        title="https://static.sitestack.cn/projects/GoExpertProgramming/chapter01/images/chan-03-send_data.png" /></p>
+<h4 id="读操作">读操作</h4>
+<ul>
+<li>如果等待发送队列<code>sendq</code>不为空，且没有缓冲区，直接从<code>sendq</code>中取出G，把G中数据读出，最后把G唤醒，结束读取过程；</li>
+<li>如果等待发送队列<code>sendq</code>不为空，此时说明缓冲区已满，从缓冲区中首部读出数据，把G中数据写入缓冲区尾部，把G唤醒，结束读取过程；</li>
+<li>如果缓冲区中有数据，则从缓冲区取出数据，结束读取过程；</li>
+<li>将当前<code>goroutine</code>加入<code>recvq</code>，进入睡眠，等待被写<code>goroutine</code>唤醒；</li>
+</ul>
+<h4 id="关闭">关闭</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="nb">close</span><span class="p">(</span><span class="kd">chan</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>关闭channel时会把recvq中的G全部唤醒，本该写入G的数据位置为nil。把sendq中的G全部唤醒，但这些G会panic。除此之外，panic出现的常见场景还有：</p>
+<ul>
+<li>关闭值为nil的channel</li>
+<li>关闭已经被关闭的channel</li>
+<li>向已经关闭的channel写数据</li>
+</ul>
+<h4 id="优雅关闭">优雅关闭</h4>
+<p><em>不要从接收端关闭通道，如果通道有多个并发发送方，也不要关闭通道。</em></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-go" data-lang="go"><span class="c1">//TODO:示例代码后续补充
+</span></code></pre></td></tr></table>
+</div>
+</div><h4 id="注意事项">注意事项</h4>
+<ol>
+<li>发生 panic 的情况有三种：向一个关闭的 <code>channel</code> 进行写操作；关闭一个 <code>nil</code> 的 <code>channel</code>；重复关闭一个 <code>channel</code>。</li>
+<li>读、写一个 <code>nil channel</code> 都会被阻塞</li>
+<li><code>channel</code>的泄漏：<code>groutine</code>操作<code>channel</code>后，一直处于发送或接收阻塞状态，而 <code>channel</code> 处于满或空的状态，一直得不到改变。同时，垃圾回收器也不会回收此类资源，进而导致 <code>gouroutine</code> 会一直处于等待队列中</li>
+</ol>
+<h3 id="reference">reference</h3>
+<p>《go专家编程》</p>
+<p><a href="https://mp.weixin.qq.com/s/ZXYpfLNGyej0df2zXqfnHQ">https://mp.weixin.qq.com/s/ZXYpfLNGyej0df2zXqfnHQ</a></p></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2021-05-31</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/go/">Go</a>,&nbsp;<a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+            <a href="/posts/context/" class="next" rel="next" title="Context源码分析">Context源码分析<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.84.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

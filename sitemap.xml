@@ -2,13 +2,15 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
-            <loc>https://zoulingbin.github.io/categories/</loc><lastmod>2021-06-28T15:27:17&#43;08:00</lastmod></url><url>
-            <loc>https://zoulingbin.github.io/tags/go/</loc><lastmod>2021-06-28T15:27:17&#43;08:00</lastmod></url><url>
-            <loc>https://zoulingbin.github.io/categories/go%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</loc><lastmod>2021-06-28T15:27:17&#43;08:00</lastmod></url><url>
-            <loc>https://zoulingbin.github.io/posts/mutex/</loc><lastmod>2021-06-28T15:27:17&#43;08:00</lastmod></url><url>
-            <loc>https://zoulingbin.github.io/posts/</loc><lastmod>2021-06-28T15:27:17&#43;08:00</lastmod></url><url>
-            <loc>https://zoulingbin.github.io/tags/</loc><lastmod>2021-06-28T15:27:17&#43;08:00</lastmod></url><url>
-            <loc>https://zoulingbin.github.io/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</loc><lastmod>2021-06-28T15:27:17&#43;08:00</lastmod></url><url>
-            <loc>https://zoulingbin.github.io/tags/%E6%A0%87%E5%87%86%E5%BA%93/</loc><lastmod>2021-06-28T15:27:17&#43;08:00</lastmod></url><url>
-            <loc>https://zoulingbin.github.io/</loc><lastmod>2021-06-28T15:27:17&#43;08:00</lastmod></url><url>
-            <loc>https://zoulingbin.github.io/posts/context/</loc><lastmod>2021-06-01T15:08:31&#43;08:00</lastmod></url></urlset>
+            <loc>https://zoulingbin.github.io/categories/</loc><lastmod>2021-06-28T16:38:45&#43;08:00</lastmod></url><url>
+            <loc>https://zoulingbin.github.io/tags/go/</loc><lastmod>2021-06-28T16:38:45&#43;08:00</lastmod></url><url>
+            <loc>https://zoulingbin.github.io/categories/go%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</loc><lastmod>2021-06-28T16:38:45&#43;08:00</lastmod></url><url>
+            <loc>https://zoulingbin.github.io/posts/</loc><lastmod>2021-06-28T16:38:45&#43;08:00</lastmod></url><url>
+            <loc>https://zoulingbin.github.io/posts/rwmutex/</loc><lastmod>2021-06-28T16:38:45&#43;08:00</lastmod></url><url>
+            <loc>https://zoulingbin.github.io/tags/</loc><lastmod>2021-06-28T16:38:45&#43;08:00</lastmod></url><url>
+            <loc>https://zoulingbin.github.io/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</loc><lastmod>2021-06-28T16:38:45&#43;08:00</lastmod></url><url>
+            <loc>https://zoulingbin.github.io/tags/%E6%A0%87%E5%87%86%E5%BA%93/</loc><lastmod>2021-06-28T16:38:45&#43;08:00</lastmod></url><url>
+            <loc>https://zoulingbin.github.io/</loc><lastmod>2021-06-28T16:38:45&#43;08:00</lastmod></url><url>
+            <loc>https://zoulingbin.github.io/posts/mutex/</loc><lastmod>2021-06-05T15:27:17&#43;08:00</lastmod></url><url>
+            <loc>https://zoulingbin.github.io/posts/context/</loc><lastmod>2021-06-01T15:08:31&#43;08:00</lastmod></url><url>
+            <loc>https://zoulingbin.github.io/posts/channel/</loc><lastmod>2021-05-31T17:38:16&#43;08:00</lastmod></url></urlset>
