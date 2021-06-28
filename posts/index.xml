@@ -1,0 +1,14 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>All Posts - 邹灵彬的博客</title>
+        <link>https://zoulingbin.github.io/posts/</link>
+        <description>All Posts | 邹灵彬的博客</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 01 Jun 2021 15:08:31 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>Context源码分析</title>
+    <link>https://zoulingbin.github.io/posts/context/</link>
+    <pubDate>Tue, 01 Jun 2021 15:08:31 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://zoulingbin.github.io/posts/context/</guid>
+    <description><![CDATA[Context是 Go 语言中非常有特色的一个特性， 其主要的作用是在 goroutine 中进行上下文的传递，而在传递信息中又包含了 goroutine 的运行控制、上下文信息传递等功能。]]></description>
+</item></channel>
+</rss>
