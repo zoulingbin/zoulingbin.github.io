@@ -27,7 +27,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/zoulingbin.github.io\/posts\/mutex\/"
-        },"genre": "posts","keywords": "Go, 标准库, 并发编程","wordcount":  423 ,
+        },"genre": "posts","keywords": "Go, 标准库, 并发编程","wordcount":  459 ,
         "url": "https:\/\/zoulingbin.github.io\/posts\/mutex\/","datePublished": "2021-06-28T15:27:17+08:00","dateModified": "2021-06-28T15:27:17+08:00","publisher": {
             "@type": "Organization",
             "name": "zoulingbin"},"author": {
@@ -77,8 +77,8 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">Mutex解析</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>zoulingbin</a></span>&nbsp;<span class="post-category">included in <a href="/categories/go%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"><i class="far fa-folder fa-fw"></i>Go并发编程</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-06-28">2021-06-28</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;423 words&nbsp;
-                <i class="far fa-clock fa-fw"></i>&nbsp;2 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-06-28">2021-06-28</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;459 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;3 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -91,6 +91,8 @@
         <li><a href="#mutex架构演进的四个阶段">mutex架构演进的四个阶段：</a></li>
         <li><a href="#初版">初版</a></li>
         <li><a href="#第二版">第二版</a></li>
+        <li><a href="#第三版">第三版</a></li>
+        <li><a href="#第四版">第四版</a></li>
       </ul>
     </li>
   </ul>
@@ -147,40 +149,40 @@
 </span></code></pre></td>
 <td class="lntd">
 <pre class="chroma"><code class="language-go" data-lang="go">   <span class="c1">// CAS操作，当时还没有抽象出atomic包
-</span><span class="c1"></span>    <span class="kd">func</span> <span class="nf">cas</span><span class="p">(</span><span class="nx">val</span> <span class="o">*</span><span class="kt">int32</span><span class="p">,</span> <span class="nx">old</span><span class="p">,</span> <span class="nx">new</span> <span class="kt">int32</span><span class="p">)</span> <span class="kt">bool</span>
-    <span class="kd">func</span> <span class="nf">semacquire</span><span class="p">(</span><span class="o">*</span><span class="kt">int32</span><span class="p">)</span>
-    <span class="kd">func</span> <span class="nf">semrelease</span><span class="p">(</span><span class="o">*</span><span class="kt">int32</span><span class="p">)</span>
-    <span class="c1">// 互斥锁的结构，包含两个字段
-</span><span class="c1"></span>    <span class="kd">type</span> <span class="nx">Mutex</span> <span class="kd">struct</span> <span class="p">{</span>
-        <span class="nx">key</span>  <span class="kt">int32</span> <span class="c1">// 锁是否被持有的标识
-</span><span class="c1"></span>        <span class="nx">sema</span> <span class="kt">int32</span> <span class="c1">// 信号量专用，用以阻塞/唤醒goroutine
-</span><span class="c1"></span>    <span class="p">}</span>
-    
-    <span class="c1">// 保证成功在val上增加delta的值
-</span><span class="c1"></span>    <span class="kd">func</span> <span class="nf">xadd</span><span class="p">(</span><span class="nx">val</span> <span class="o">*</span><span class="kt">int32</span><span class="p">,</span> <span class="nx">delta</span> <span class="kt">int32</span><span class="p">)</span> <span class="p">(</span><span class="nx">new</span> <span class="kt">int32</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">for</span> <span class="p">{</span>
-            <span class="nx">v</span> <span class="o">:=</span> <span class="o">*</span><span class="nx">val</span>
-            <span class="k">if</span> <span class="nf">cas</span><span class="p">(</span><span class="nx">val</span><span class="p">,</span> <span class="nx">v</span><span class="p">,</span> <span class="nx">v</span><span class="o">+</span><span class="nx">delta</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">return</span> <span class="nx">v</span> <span class="o">+</span> <span class="nx">delta</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-        <span class="nb">panic</span><span class="p">(</span><span class="s">&#34;unreached&#34;</span><span class="p">)</span>
-    <span class="p">}</span>
-    
-    <span class="c1">// 请求锁
-</span><span class="c1"></span>    <span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Mutex</span><span class="p">)</span> <span class="nf">Lock</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="nf">xadd</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">m</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">{</span> <span class="c1">//标识加1，如果等于1，成功获取到锁
-</span><span class="c1"></span>            <span class="k">return</span>
-        <span class="p">}</span>
-        <span class="nf">semacquire</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">m</span><span class="p">.</span><span class="nx">sema</span><span class="p">)</span> <span class="c1">// 否则阻塞等待
-</span><span class="c1"></span>    <span class="p">}</span>
-    
-    <span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Mutex</span><span class="p">)</span> <span class="nf">Unlock</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="nf">xadd</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">m</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span> <span class="c1">// 将标识减去1，如果等于0，则没有其它等待者
-</span><span class="c1"></span>            <span class="k">return</span>
-        <span class="p">}</span>
-        <span class="nf">semrelease</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">m</span><span class="p">.</span><span class="nx">sema</span><span class="p">)</span> <span class="c1">// 唤醒其它阻塞的goroutine
-</span><span class="c1"></span>    <span class="p">}</span>    
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">cas</span><span class="p">(</span><span class="nx">val</span> <span class="o">*</span><span class="kt">int32</span><span class="p">,</span> <span class="nx">old</span><span class="p">,</span> <span class="nx">new</span> <span class="kt">int32</span><span class="p">)</span> <span class="kt">bool</span>
+<span class="kd">func</span> <span class="nf">semacquire</span><span class="p">(</span><span class="o">*</span><span class="kt">int32</span><span class="p">)</span>
+<span class="kd">func</span> <span class="nf">semrelease</span><span class="p">(</span><span class="o">*</span><span class="kt">int32</span><span class="p">)</span>
+<span class="c1">// 互斥锁的结构，包含两个字段
+</span><span class="c1"></span><span class="kd">type</span> <span class="nx">Mutex</span> <span class="kd">struct</span> <span class="p">{</span>
+<span class="nx">key</span>  <span class="kt">int32</span> <span class="c1">// 锁是否被持有的标识
+</span><span class="c1"></span><span class="nx">sema</span> <span class="kt">int32</span> <span class="c1">// 信号量专用，用以阻塞/唤醒goroutine
+</span><span class="c1"></span><span class="p">}</span>
+
+<span class="c1">// 保证成功在val上增加delta的值
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">xadd</span><span class="p">(</span><span class="nx">val</span> <span class="o">*</span><span class="kt">int32</span><span class="p">,</span> <span class="nx">delta</span> <span class="kt">int32</span><span class="p">)</span> <span class="p">(</span><span class="nx">new</span> <span class="kt">int32</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">for</span> <span class="p">{</span>
+<span class="nx">v</span> <span class="o">:=</span> <span class="o">*</span><span class="nx">val</span>
+<span class="k">if</span> <span class="nf">cas</span><span class="p">(</span><span class="nx">val</span><span class="p">,</span> <span class="nx">v</span><span class="p">,</span> <span class="nx">v</span><span class="o">+</span><span class="nx">delta</span><span class="p">)</span> <span class="p">{</span>
+<span class="k">return</span> <span class="nx">v</span> <span class="o">+</span> <span class="nx">delta</span>
+<span class="p">}</span>
+<span class="p">}</span>
+<span class="nb">panic</span><span class="p">(</span><span class="s">&#34;unreached&#34;</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1">// 请求锁
+</span><span class="c1"></span><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Mutex</span><span class="p">)</span> <span class="nf">Lock</span><span class="p">()</span> <span class="p">{</span>
+<span class="k">if</span> <span class="nf">xadd</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">m</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">{</span> <span class="c1">//标识加1，如果等于1，成功获取到锁
+</span><span class="c1"></span><span class="k">return</span>
+<span class="p">}</span>
+<span class="nf">semacquire</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">m</span><span class="p">.</span><span class="nx">sema</span><span class="p">)</span> <span class="c1">// 否则阻塞等待
+</span><span class="c1"></span><span class="p">}</span>
+
+<span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Mutex</span><span class="p">)</span> <span class="nf">Unlock</span><span class="p">()</span> <span class="p">{</span>
+<span class="k">if</span> <span class="nf">xadd</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">m</span><span class="p">.</span><span class="nx">key</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span> <span class="c1">// 将标识减去1，如果等于0，则没有其它等待者
+</span><span class="c1"></span><span class="k">return</span>
+<span class="p">}</span>
+<span class="nf">semrelease</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">m</span><span class="p">.</span><span class="nx">sema</span><span class="p">)</span> <span class="c1">// 唤醒其它阻塞的goroutine
+</span><span class="c1"></span><span class="p">}</span>    
 </code></pre></td></tr></table>
 </div>
 </div><p>CAS 指令将<strong>给定的值和一个内存地址中的值进行比较</strong>，如果它们是同一个值，就使用新值替换内存地址中的值，这个操作是原子性的。<strong>原子性保证这个指令总是基于最新的值进行计算，如果同时有其它线程已经修改了这个值，那么，CAS 会返回失败</strong>。</p>
@@ -375,7 +377,25 @@
     <span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
-</div></div><div class="post-footer" id="post-footer">
+</div><p>第 3 行是尝试将持有锁的标识设置为未加锁的状态，这是通过减 1 而不是将标志位置零的方式实现。第 4 到 6 行还会检测原来锁的状态是否已经未加锁的状态，如果是 Unlock 一个未加锁的 Mutex 会直接 panic。
+第10-12行，如果阻塞在该锁上的goroutine数目为0或者mutex处于lock或者唤醒状态，则返回。
+第13-17行，如果有等待者，并且没有唤醒的 waiter，那就需要唤醒一个等待的 waiter。在唤醒之前，需要将 waiter 数量减 1，并且将 mutexWoken 标志设置上，这样，Unlock 就可以返回了。</p>
+<p>相对于初版的设计，这次的改动主要就是，新来的<code>goroutine</code>也有机会先获取到锁，甚至一个<code>goroutine</code>可能连续获取到锁，打破了先来先得的逻辑。</p>
+<h3 id="第三版">第三版</h3>
+<p>第三版的改动主要是：新来的<code>goroutine</code>或者是被唤醒的<code>goroutine</code>首次获取不到锁，它们就会通过自旋的方式，尝试检查锁是否被释放。在尝试一定的自旋次数后，再执行原来的逻辑。</p>
+<h3 id="第四版">第四版</h3>
+<p>第四版主要解决的问题是：解决饥饿。因为从第二版开始，就有新来的<code>goroutine</code>加入到抢占锁，所以有可能每次都会被新来的<code>goroutine</code>抢占到锁，在极端情况下，等待的<code>goroutine</code>有可能一直获取不到锁，这就是<strong>饥饿问题</strong>。</p>
+<p>由于代码过多，且目前能力不够，就先总结，留个坑，以后持续关注这个问题。</p>
+<p><img
+        class="lazyload"
+        src="/svg/loading.min.svg"
+        data-src="https://static001.geekbang.org/resource/image/e0/76/e0c23794c8a1d355a7a183400c036276.jpg"
+        data-srcset="https://static001.geekbang.org/resource/image/e0/76/e0c23794c8a1d355a7a183400c036276.jpg, https://static001.geekbang.org/resource/image/e0/76/e0c23794c8a1d355a7a183400c036276.jpg 1.5x, https://static001.geekbang.org/resource/image/e0/76/e0c23794c8a1d355a7a183400c036276.jpg 2x"
+        data-sizes="auto"
+        alt="https://static001.geekbang.org/resource/image/e0/76/e0c23794c8a1d355a7a183400c036276.jpg"
+        title="https://static001.geekbang.org/resource/image/e0/76/e0c23794c8a1d355a7a183400c036276.jpg" /></p>
+<p>目前go关于mutex的设计是：让不公平的等待时间限制在1毫秒，<code>state</code>字段增加了<code>mutexStarving</code>(饥饿标记)，这就意味着，一旦等待者等待的时间超过了这个阈值，Mutex 的处理就有可能进入饥饿模式，优先让等待者先获取到锁。</p>
+<p>通过加入饥饿模式，可以避免把机会全都留给新来的 goroutine，保证了请求锁的 goroutine 获取锁的公平性，对于我们使用锁的业务代码来说，不会有业务一直等待锁不被处理。</p></div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
