@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>3.2 多进程编程 - 邹灵彬的博客</title><meta name="Description" content="《Go并发编程实战第二版》阅读笔记"><meta property="og:title" content="3.2 多进程编程" />
+<meta property="og:description" content="《Go并发编程实战第二版》阅读笔记" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://zoulingbin.github.io/posts/3-2%E5%A4%9A%E8%BF%9B%E7%A8%8B%E7%BC%96%E7%A8%8B/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-06-29T17:59:58&#43;08:00" />
+<meta property="article:modified_time" content="2021-06-29T17:59:58&#43;08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="3.2 多进程编程"/>
+<meta name="twitter:description" content="《Go并发编程实战第二版》阅读笔记"/>
+<meta name="application-name" content="邹灵彬的博客">
+<meta name="apple-mobile-web-app-title" content="邹灵彬的博客"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://zoulingbin.github.io/posts/3-2%E5%A4%9A%E8%BF%9B%E7%A8%8B%E7%BC%96%E7%A8%8B/" /><link rel="prev" href="https://zoulingbin.github.io/posts/gmp%E8%B0%83%E5%BA%A6/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "3.2 多进程编程",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/zoulingbin.github.io\/posts\/3-2%E5%A4%9A%E8%BF%9B%E7%A8%8B%E7%BC%96%E7%A8%8B\/"
+        },"genre": "posts","keywords": "并发编程, 阅读笔记","wordcount":  44 ,
+        "url": "https:\/\/zoulingbin.github.io\/posts\/3-2%E5%A4%9A%E8%BF%9B%E7%A8%8B%E7%BC%96%E7%A8%8B\/","datePublished": "2021-06-29T17:59:58+08:00","dateModified": "2021-06-29T17:59:58+08:00","publisher": {
+            "@type": "Organization",
+            "name": "zoulingbin"},"author": {
+                "@type": "Person",
+                "name": "zoulingbin"
+            },"description": "《Go并发编程实战第二版》阅读笔记"
+    }
+    </script></head>
+    <body header-desktop="" header-mobile=""><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="邹灵彬的博客">邹灵彬的博客</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="邹灵彬的博客">邹灵彬的博客</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">3.2 多进程编程</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>zoulingbin</a></span>&nbsp;<span class="post-category">included in <a href="/categories/go%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E5%AE%9E%E6%88%98%E7%AC%AC%E4%BA%8C%E7%89%88/"><i class="far fa-folder fa-fw"></i>Go并发编程实战第二版</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-06-29">2021-06-29</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;44 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#31-并发编程基础">3.1 并发编程基础</a>
+          <ul>
+            <li><a href="#312-并发程序与并行程序">3.1.2 并发程序与并行程序</a></li>
+            <li><a href="#313-并发程序与并发系统">3.1.3 并发程序与并发系统</a></li>
+            <li><a href="#314-并发程序的不确定性">3.1.4 并发程序的不确定性</a></li>
+            <li><a href="#315-并发程序内部的交互">3.1.5 并发程序内部的交互</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#32-多进程编程">3.2 多进程编程</a>
+      <ul>
+        <li><a href="#321--进程">3.2.1  进程</a>
+          <ul>
+            <li><a href="#1进程的定义">1.进程的定义</a></li>
+            <li><a href="#2进程的衍生">2.进程的衍生</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h3 id="31-并发编程基础">3.1 并发编程基础</h3>
+<p>并发这个概念由来已久，其主要思想是使多个任务可以在同一时间段内执行以便更快得到结果。</p>
+<h4 id="312-并发程序与并行程序">3.1.2 并发程序与并行程序</h4>
+<p>并发程序是指可以被同时发起执行的程序，而并行程序则被设计成可以在并行的硬件上执行的并发程序。也就是说，并发程序代表了所有可以实现并发行为的程序，它是一个比较宽泛的概念，其中包括了并行程序。</p>
+<h4 id="313-并发程序与并发系统">3.1.3 并发程序与并发系统</h4>
+<p>首先，并发程序属于程序，即使它被划分为多个部分，只要这些部分之间是紧密关联在一起的，并且可以看作一个整体，那么它就属于一个程序，也可以称为一个内聚的软件单元。另一方面，程序与程序之间可以通过协商一致的协议通信，并且它们之间是松耦合的。它们可以看作一个系统，而不是程序。并发程序和并发系统中的<strong>并发</strong>是同一个含义。但是，并发系统更有可能是并行的，因为其中的多个程序一般可以同时在不同的硬件环境上运行。因此，并发系统也常常称为并行系统。</p>
+<h4 id="314-并发程序的不确定性">3.1.4 并发程序的不确定性</h4>
+<p>串行程序中所有代码的先后顺序都是固定的，而并发程序中只有代码部分是有序的。
+也就是说，其中一些代码的执行顺序并没有明确指定。这一特性叫做<strong>不确定性</strong>，这导致并发程序每次执行的代码执行路径都是不同的。即便是在输入数据相同的前提下，也是如此。</p>
+<h4 id="315-并发程序内部的交互">3.1.5 并发程序内部的交互</h4>
+<p>根据同步的原则，程序如果想使用一个资源，就必须先请求该资源并获取到对它的访问权。当程序不再需要某个资源的时候，应该放弃对它的访问权（也就是释放资源）。一个程序对资源的请求不应该导致其他正在访问该资源的程序中断，而应该等到那个程序释放该资源之后再进行请求（锁机制的概念）。也就是说，在同一时刻，某个资源应该只被一个程序占用。</p>
+<p>传递数据是并发程序内部的另一种交互方式，也称为并发程序内部的通信。实际上协调这种内部通信的方式还有异步。利用异步的方式对通信进行管理，使数据可以不加延迟的发送给接收方，即使接收方还没准备好接收数据，也不会造成发送方的等待。数据被临时存到一个通信缓存的数据结构中。通信缓存是一个特殊的资源，可以同时被多个程序使用。</p>
+<h2 id="32-多进程编程">3.2 多进程编程</h2>
+<p>进程间的通信被称作<code>IPC</code>,在linux系统中使用的IPC方法有很多种。从处理机制的角度看，可以分作三大类：<strong>基于通信的IPC方法</strong>， <strong>基于信号的IPC方法</strong> 和 <strong>基于同步的IPC方法</strong>。</p>
+<p>其中，基于通信的IPC方法又分为 <strong>以数据传送为手段</strong> 的IPC方法和 <strong>以共享内存为手段</strong> 的IPC方法，前者包括了管道(pipe)和消息队列(message queue)。管道可以用来传送字节流， 消息队列可以用来传送结构化的消息对象。</p>
+<p>以共享内存为手段的IPC方法主要以 <strong>共享内存区(shared memory)</strong> 为代表，这是最快的一种方法。</p>
+<p>基于信号的IPC方法就是我们常说的操作系统的信号机制(signal)，这是唯一一种异步IPC方法。在基于同步的IPC方法中，最重要的就是信号量(semaphore)。</p>
+<p>go支持的IPC方法有管道，信号和socket。</p>
+<h3 id="321--进程">3.2.1  进程</h3>
+<h4 id="1进程的定义">1.进程的定义</h4>
+<p>进程是unix系统的根本，因为所有的代码都是在进程中执行的。通常，我们把一个程序的执行称为一个进程。也就是说，进程用于描述程序的执行过程。因此，程序和进程是一对概念，它们分别描述了一个程序的静态形式和动态特征。除此之外，进程还是操作系统进行资源分配的一个基本单位。</p>
+<h4 id="2进程的衍生">2.进程的衍生</h4>
+<p>进程使用<code>fork</code>(一个系统调用函数)可以创建若干个新的进程(子进程)，前者称为后者的<strong>父进程</strong>，后者称为前者的<strong>子进程</strong>。每个子进程都源自它的父进程的一个副本，它会获得父进程的数据段，堆，栈的副本，与父进程共享代码段。每一个副本都是独立的，子进程对属于它的副本的修改对其父进程和兄弟进程都是不可见的，反之亦然。全盘复制是一种很低效的做法，linux内核使用**写时复制(Copy of Write)**等技术来提高创建的效率。刚创建的子进程也可以通过系统调用<code>exec</code>把一个新的程序加载到自己的内存中，而原先在其内存中的数据段、堆、栈以及代码段就会被替换掉。在这之后，子进程执行的就会是那个刚刚加载进来的新程序。</p></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2021-06-29</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a>,&nbsp;<a href="/tags/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">阅读笔记</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/gmp%E8%B0%83%E5%BA%A6/" class="prev" rel="prev" title="GMP调度"><i class="fas fa-angle-left fa-fw"></i>GMP调度</a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.84.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

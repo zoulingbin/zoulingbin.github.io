@@ -3,7 +3,14 @@
         <title>Go - Tag - 邹灵彬的博客</title>
         <link>https://zoulingbin.github.io/tags/go/</link>
         <description>Go - Tag - 邹灵彬的博客</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 28 Jun 2021 16:38:45 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/tags/go/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 29 Jun 2021 17:56:43 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/tags/go/" rel="self" type="application/rss+xml" /><item>
+    <title>GMP调度</title>
+    <link>https://zoulingbin.github.io/posts/gmp%E8%B0%83%E5%BA%A6/</link>
+    <pubDate>Tue, 29 Jun 2021 17:56:43 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://zoulingbin.github.io/posts/gmp%E8%B0%83%E5%BA%A6/</guid>
+    <description><![CDATA[gmp调度分析]]></description>
+</item><item>
     <title>RWMutex:读写锁的实现原理</title>
     <link>https://zoulingbin.github.io/posts/rwmutex/</link>
     <pubDate>Mon, 28 Jun 2021 16:38:45 &#43;0800</pubDate>
