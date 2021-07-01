@@ -11,6 +11,13 @@
     <guid>https://zoulingbin.github.io/posts/3-2%E5%A4%9A%E8%BF%9B%E7%A8%8B%E7%BC%96%E7%A8%8B/</guid>
     <description><![CDATA[《Go并发编程实战第二版》阅读笔记]]></description>
 </item><item>
+    <title>GMP调度</title>
+    <link>https://zoulingbin.github.io/posts/gmp%E8%B0%83%E5%BA%A6/</link>
+    <pubDate>Tue, 29 Jun 2021 17:56:43 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://zoulingbin.github.io/posts/gmp%E8%B0%83%E5%BA%A6/</guid>
+    <description><![CDATA[gmp调度分析]]></description>
+</item><item>
     <title>RWMutex:读写锁的实现原理</title>
     <link>https://zoulingbin.github.io/posts/rwmutex/</link>
     <pubDate>Mon, 28 Jun 2021 16:38:45 &#43;0800</pubDate>

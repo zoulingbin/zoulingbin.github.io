@@ -8,10 +8,9 @@
         <title>GMP调度 - 邹灵彬的博客</title><meta name="Description" content="gmp调度分析"><meta property="og:title" content="GMP调度" />
 <meta property="og:description" content="gmp调度分析" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://zoulingbin.github.io/posts/gmp%E8%B0%83%E5%BA%A6/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2021-06-29T17:56:43&#43;08:00" />
-<meta property="article:modified_time" content="2021-06-29T17:56:43&#43;08:00" />
-
+<meta property="og:url" content="https://zoulingbin.github.io/posts/gmp%E8%B0%83%E5%BA%A6/" />
+<meta property="article:published_time" content="2021-06-29T17:56:43+08:00" />
+<meta property="article:modified_time" content="2021-06-29T17:56:43+08:00" />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="GMP调度"/>
 <meta name="twitter:description" content="gmp调度分析"/>
@@ -27,7 +26,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/zoulingbin.github.io\/posts\/gmp%E8%B0%83%E5%BA%A6\/"
-        },"genre": "posts","keywords": "GO","wordcount":  1 ,
+        },"genre": "posts","keywords": "GO, 并发编程","wordcount":  76 ,
         "url": "https:\/\/zoulingbin.github.io\/posts\/gmp%E8%B0%83%E5%BA%A6\/","datePublished": "2021-06-29T17:56:43+08:00","dateModified": "2021-06-29T17:56:43+08:00","publisher": {
             "@type": "Organization",
             "name": "zoulingbin"},"author": {
@@ -77,7 +76,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">GMP调度</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>zoulingbin</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-06-29">2021-06-29</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;One word&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-06-29">2021-06-29</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;76 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
@@ -88,12 +87,113 @@
   <ul>
     <li>
       <ul>
-        <li><a href="#gmp">GMP</a></li>
+        <li><a href="#什么是gmp模型">什么是gmp模型</a>
+          <ul>
+            <li><a href="#g-m-p三者关系">G-M-P三者关系</a></li>
+          </ul>
+        </li>
+        <li><a href="#线程调度原理">线程调度原理</a></li>
+        <li><a href="#gmp调度原理">GMP调度原理</a>
+          <ul>
+            <li><a href="#调度器的生命周期">调度器的生命周期</a></li>
+          </ul>
+        </li>
+        <li><a href="#reference">reference</a></li>
       </ul>
     </li>
   </ul>
 </nav></div>
-            </div><div class="content" id="content"><h3 id="gmp">GMP</h3></div><div class="post-footer" id="post-footer">
+            </div><div class="content" id="content"><h3 id="什么是gmp模型">什么是gmp模型</h3>
+<p>Golang 语言的调度器是基于协程调度模型 GMP，即 goroutine（协程）、processor（处理器）、thread（线程），通过三者的相互协作，实现在用户空间管理和调度并发任务。
+<figure><a class="lightgallery" href="/posts/640.png" title="/posts/640.png" data-thumbnail="/posts/640.png" data-sub-html="<h2>GMP模型</h2>">
+        <img
+            class="lazyload"
+            src="/svg/loading.min.svg"
+            data-src="/posts/640.png"
+            data-srcset="/posts/640.png, /posts/640.png 1.5x, /posts/640.png 2x"
+            data-sizes="auto"
+            alt="/posts/640.png" height="600px" width="600px" />
+    </a><figcaption class="image-caption">GMP模型</figcaption>
+    </figure></p>
+<blockquote>
+<p>G</p>
+</blockquote>
+<p>G是<code>goroutine</code>的缩写,每个goroutine都有自己的栈空间，定时器，初始化的栈空间在2k左右，空间会随着需求增长。G的数量没限制，但受内存影响。</p>
+<blockquote>
+<p>M</p>
+</blockquote>
+<p>抽象化代表内核线程，记录内核线程栈信息，当goroutine调度到线程时，使用该goroutine自己的栈信息。Go 语言中，M 的默认数量限制是 10000，如果超出则会报错</p>
+<blockquote>
+<p>P</p>
+</blockquote>
+<p>Processor，处理器，一般<code>P</code>的数量就是处理器的核数，可以通过<code>GOMAXPROCS</code>进行修改。</p>
+<h4 id="g-m-p三者关系">G-M-P三者关系</h4>
+<p>G-M-P三者的关系与特点：</p>
+<ul>
+<li>每一个<code>P</code>保存着一个协程G的队列，即<code>p</code>的本地队列。</li>
+<li>除了每个<code>P</code>自身保存的<code>G</code>的队列外，调度器还拥有一个全局的<code>G</code>队列</li>
+<li><code>M</code>的数量和P不一定匹配，可以设置很多<code>M</code>，<code>M</code>和<code>P</code>绑定后才可运行，多余的M处于休眠状态。</li>
+<li>无论在哪个<code>M</code>中创建了一个<code>G</code>，只要<code>P</code>有空闲的，就会引起新<code>M</code>的创建</li>
+</ul>
+<p>三者关系：G需要绑定在M上才能运行，M需要绑定P才能运行。</p>
+<h3 id="线程调度原理">线程调度原理</h3>
+<ul>
+<li>N:1模型：多个用户空间线程在1个内核空间线程上运行。优势是上下文切换非常快，因为这些线程都在内核态运行，但是无法利用多核系统的优点。</li>
+<li>1:1模型：1个内核空间线程运行一个用户空间线程。这种充分利用了多核系统的优势但是上下文切换非常慢，因为每一次调度都会在用户态和内核态之间切换。POSIX线程模型(pthread)就是这么做的。</li>
+<li>M:N模型：内核空间开启多个内核线程，一个内核空间线程对应多个用户空间线程。效率非常高，但是管理复杂。</li>
+</ul>
+<h3 id="gmp调度原理">GMP调度原理</h3>
+<p>在旧版本里，go的goroutine调度模型是GM。</p>
+<figure><a class="lightgallery" href="https://cdn.learnku.com/uploads/images/202003/11/58489/uWk9pzdREk.png" title="https://cdn.learnku.com/uploads/images/202003/11/58489/uWk9pzdREk.png" data-thumbnail="https://cdn.learnku.com/uploads/images/202003/11/58489/uWk9pzdREk.png" data-sub-html="<h2>GM模型</h2>">
+        <img
+            class="lazyload"
+            src="/svg/loading.min.svg"
+            data-src="https://cdn.learnku.com/uploads/images/202003/11/58489/uWk9pzdREk.png"
+            data-srcset="https://cdn.learnku.com/uploads/images/202003/11/58489/uWk9pzdREk.png, https://cdn.learnku.com/uploads/images/202003/11/58489/uWk9pzdREk.png 1.5x, https://cdn.learnku.com/uploads/images/202003/11/58489/uWk9pzdREk.png 2x"
+            data-sizes="auto"
+            alt="https://cdn.learnku.com/uploads/images/202003/11/58489/uWk9pzdREk.png" height="600px" width="600px" />
+    </a><figcaption class="image-caption">GM模型</figcaption>
+    </figure>
+<p>在老调度器的缺点主要是，多个线程（M）从全局队列里获取goroutine时，需要频繁的加锁，形成了激烈的锁竞争。</p>
+<figure><a class="lightgallery" href="https://cdn.learnku.com/uploads/images/202003/11/58489/Ugu3C2WSpM.jpeg" title="https://cdn.learnku.com/uploads/images/202003/11/58489/Ugu3C2WSpM.jpeg" data-thumbnail="https://cdn.learnku.com/uploads/images/202003/11/58489/Ugu3C2WSpM.jpeg" data-sub-html="<h2>GMP模型</h2>">
+        <img
+            class="lazyload"
+            src="/svg/loading.min.svg"
+            data-src="https://cdn.learnku.com/uploads/images/202003/11/58489/Ugu3C2WSpM.jpeg"
+            data-srcset="https://cdn.learnku.com/uploads/images/202003/11/58489/Ugu3C2WSpM.jpeg, https://cdn.learnku.com/uploads/images/202003/11/58489/Ugu3C2WSpM.jpeg 1.5x, https://cdn.learnku.com/uploads/images/202003/11/58489/Ugu3C2WSpM.jpeg 2x"
+            data-sizes="auto"
+            alt="https://cdn.learnku.com/uploads/images/202003/11/58489/Ugu3C2WSpM.jpeg" height="600px" width="600px" />
+    </a><figcaption class="image-caption">GMP模型</figcaption>
+    </figure>
+<p>全局队列里存放着等待运行的G。每个<code>P</code>都维护自己的一个本地队列，这样就可以解决每次执行<code>G</code>都要去全局队列取<code>G</code>，导致的频繁抢占锁的问题。每个<code>P</code>都有一个<code>runnext</code>。<code>runnext</code>实际上只能指向一个<code>G</code>,可以理解为特殊的队列。如果 runnext 为空，那么 goroutine 就会顺利地放入 runnext，接下来，它会以最高优先级得到运行，即优先被消费。</p>
+<p>如果<code>runnext</code>不为空，那就先负责把<code>runnext</code>上的<code>old G</code>踢走，再把<code>new G</code>放上来。被踢走的<code>G</code>会被放到本地队列，本地队列的容量是256，如果本地队列满了，则会将本地队列的一半数量的<code>G</code>放到全局队列里，被其他的<code>M</code>消费掉。当本地队列为空时，M会执行全局队列的<code>G</code>。
+当全局队列为空时，空闲的M会执行其他P的本地队列里的<code>G</code>。</p>
+<p><code>M</code>执行过程中，随时会发生上下文切换。当发生上线文切换时，需要对执行现场进行保护，以便下次被调度执行时进行现场恢复。Go调度器<code>M</code>的栈保存在<code>G</code>对象上，只需要将<code>M</code>所需要的寄存器(SP、PC等)保存到<code>G</code>对象上就可以实现现场保护。当这些寄存器数据被保护起来，就随时可以做上下文切换了，在中断之前把现场保存起来。如果此时<code>G</code>任务还没有执行完，<code>M</code>可以将任务重新丢到<code>P</code>的队列，等待下一次被调度执行。当再次被调度执行时，<code>M</code>通过访问<code>G</code>的SP、PC寄存器进行现场恢复，从上次中断位置继续执行。</p>
+<p>一个<code>G</code>最多占用CPU 10ms，防止其他<code>G</code>被饿死。</p>
+<h4 id="调度器的生命周期">调度器的生命周期</h4>
+<figure><a class="lightgallery" href="/posts/gmp.png" title="/posts/gmp.png" data-thumbnail="/posts/gmp.png" data-sub-html="<h2>gmp生命周期</h2>">
+        <img
+            class="lazyload"
+            src="/svg/loading.min.svg"
+            data-src="/posts/gmp.png"
+            data-srcset="/posts/gmp.png, /posts/gmp.png 1.5x, /posts/gmp.png 2x"
+            data-sizes="auto"
+            alt="/posts/gmp.png" height="600px" width="600px" />
+    </a><figcaption class="image-caption">gmp生命周期</figcaption>
+    </figure>
+<blockquote>
+<p>M0</p>
+</blockquote>
+<p>M0 是启动程序后的编号为 0 的主线程，这个 M 对应的实例会在全局变量 runtime.m0 中，不需要在 heap 上分配，M0 负责执行初始化操作和启动第一个 G， 在之后 M0 就和其他的 M 一样了。</p>
+<blockquote>
+<p>G0</p>
+</blockquote>
+<p><code>G0</code>是每次启动一个<code>M</code>都会第一个创建的<code>goroutine</code>，<code>G0</code>仅用于负责调度的<code>G</code>，<code>G0</code>不指向任何可执行的函数，每个<code>M</code>都会有一个自己的<code>G0</code>。在调度或系统调用时会使用<code>G0</code>的栈空间，全局变量的<code>G0</code>是<code>M0</code>的<code>G0</code>。</p>
+<h3 id="reference">reference</h3>
+<p><a href="https://mp.weixin.qq.com/s/DZVn-5n-yB-swE0J4CjcbQ">https://mp.weixin.qq.com/s/DZVn-5n-yB-swE0J4CjcbQ</a></p>
+<p><a href="https://mp.weixin.qq.com/s/an7dml9NLOhqOZjEGLdEEw">https://mp.weixin.qq.com/s/an7dml9NLOhqOZjEGLdEEw</a></p>
+<p><a href="https://mp.weixin.qq.com/s/5E5V56wazp5gs9lrLvtopA">https://mp.weixin.qq.com/s/5E5V56wazp5gs9lrLvtopA</a></p>
+<p><a href="https://learnku.com/articles/41728">https://learnku.com/articles/41728</a> (图片来源)</p></div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
@@ -110,7 +210,7 @@
     </div>
 
     <div class="post-info-more">
-        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/go/">Go</a></section>
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/go/">Go</a>,&nbsp;<a href="/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/">并发编程</a></section>
         <section>
             <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
         </section>
@@ -121,7 +221,7 @@
 </div>
 </article></div>
             </main><footer class="footer">
-        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.84.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.79.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
                 </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
         </div>
     </footer></div>
