@@ -26,7 +26,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/zoulingbin.github.io\/posts\/rwmutex\/"
-        },"genre": "posts","keywords": "Go, 标准库, 并发编程","wordcount":  636 ,
+        },"genre": "posts","keywords": "Go, 标准库, 并发编程","wordcount":  640 ,
         "url": "https:\/\/zoulingbin.github.io\/posts\/rwmutex\/","datePublished": "2021-06-28T16:38:45+08:00","dateModified": "2021-06-28T16:38:45+08:00","publisher": {
             "@type": "Organization",
             "name": "zoulingbin"},"author": {
@@ -76,8 +76,8 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">RWMutex:读写锁的实现原理</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>zoulingbin</a></span>&nbsp;<span class="post-category">included in <a href="/categories/go%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"><i class="far fa-folder fa-fw"></i>Go并发编程</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-06-28">2021-06-28</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;636 words&nbsp;
-                <i class="far fa-clock fa-fw"></i>&nbsp;3 minutes&nbsp;</div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-06-28">2021-06-28</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;640 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
                     <span>Contents</span>
@@ -441,7 +441,8 @@ readers-writers 问题一般有三类，基于对读和写操作的优先级，�
 <span class="p">}</span>
 </code></pre></td></tr></table>
 </div>
-</div></div><div class="post-footer" id="post-footer">
+</div><p>当一个 <code>writer</code>释放锁的时候，它会再次反转<code>readerCount</code>字段。可以肯定的是，因为当前锁由<code>writer</code>持有，所以，<code>readerCount</code>字段是反转过的，并且减去了<code>rwmutexMaxReaders</code>这个常数，变成了负数。所以，这里的反转方法就是给它增加 <code>rwmutexMaxReaders</code>这个常数值。
+在<code>RWMutex</code>的<code>Unlock</code>返回之前，需要把内部的互斥锁释放。释放完毕后，其他的<code>writer</code>才可以继续竞争这把锁。</p></div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
