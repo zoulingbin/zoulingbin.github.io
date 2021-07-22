@@ -9,15 +9,15 @@
 <meta property="og:description" content="鸟窝大佬的go并发编程阅读记录，RWMutex的实现原理" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://zoulingbin.github.io/posts/rwmutex/" />
-<meta property="article:published_time" content="2021-06-28T16:38:45+08:00" />
-<meta property="article:modified_time" content="2021-06-28T16:38:45+08:00" />
+<meta property="article:published_time" content="2021-07-23T02:38:45+08:00" />
+<meta property="article:modified_time" content="2021-07-23T02:38:45+08:00" />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="RWMutex:读写锁的实现原理"/>
 <meta name="twitter:description" content="鸟窝大佬的go并发编程阅读记录，RWMutex的实现原理"/>
 <meta name="application-name" content="邹灵彬的博客">
 <meta name="apple-mobile-web-app-title" content="邹灵彬的博客"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://zoulingbin.github.io/posts/rwmutex/" /><link rel="prev" href="https://zoulingbin.github.io/posts/tcp%E5%8D%8F%E8%AE%AE/" /><link rel="next" href="https://zoulingbin.github.io/posts/gmp%E8%B0%83%E5%BA%A6/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://zoulingbin.github.io/posts/rwmutex/" /><link rel="prev" href="https://zoulingbin.github.io/posts/3-2%E5%A4%9A%E8%BF%9B%E7%A8%8B%E7%BC%96%E7%A8%8B/" /><link rel="next" href="https://zoulingbin.github.io/posts/mutex%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
@@ -27,7 +27,7 @@
             "@type": "WebPage",
             "@id": "https:\/\/zoulingbin.github.io\/posts\/rwmutex\/"
         },"genre": "posts","keywords": "Go, 标准库, 并发编程","wordcount":  640 ,
-        "url": "https:\/\/zoulingbin.github.io\/posts\/rwmutex\/","datePublished": "2021-06-28T16:38:45+08:00","dateModified": "2021-06-28T16:38:45+08:00","publisher": {
+        "url": "https:\/\/zoulingbin.github.io\/posts\/rwmutex\/","datePublished": "2021-07-23T02:38:45+08:00","dateModified": "2021-07-23T02:38:45+08:00","publisher": {
             "@type": "Organization",
             "name": "zoulingbin"},"author": {
                 "@type": "Person",
@@ -76,7 +76,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">RWMutex:读写锁的实现原理</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>zoulingbin</a></span>&nbsp;<span class="post-category">included in <a href="/categories/go%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"><i class="far fa-folder fa-fw"></i>Go并发编程</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-06-28">2021-06-28</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;640 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-07-23">2021-07-23</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;640 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;4 minutes&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
@@ -446,7 +446,7 @@ readers-writers 问题一般有三类，基于对读和写操作的优先级，�
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
-                <span>Updated on 2021-06-28</span>
+                <span>Updated on 2021-07-23</span>
             </div>
             <div class="post-info-license"></div>
         </div>
@@ -465,8 +465,8 @@ readers-writers 问题一般有三类，基于对读和写操作的优先级，�
         </section>
     </div>
 
-    <div class="post-nav"><a href="/posts/tcp%E5%8D%8F%E8%AE%AE/" class="prev" rel="prev" title="TCP协议窗口与拥塞控制（留个坑 后面更新）"><i class="fas fa-angle-left fa-fw"></i>TCP协议窗口与拥塞控制（留个坑 后面更新）</a>
-            <a href="/posts/gmp%E8%B0%83%E5%BA%A6/" class="next" rel="next" title="GMP调度">GMP调度<i class="fas fa-angle-right fa-fw"></i></a></div>
+    <div class="post-nav"><a href="/posts/3-2%E5%A4%9A%E8%BF%9B%E7%A8%8B%E7%BC%96%E7%A8%8B/" class="prev" rel="prev" title="3.2 多进程编程"><i class="fas fa-angle-left fa-fw"></i>3.2 多进程编程</a>
+            <a href="/posts/mutex%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9/" class="next" rel="next" title="Mutex/RWMutex注意的点">Mutex/RWMutex注意的点<i class="fas fa-angle-right fa-fw"></i></a></div>
 </div>
 </article></div>
             </main><footer class="footer">
