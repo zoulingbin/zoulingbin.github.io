@@ -1,0 +1,15 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>网络编程 - Category - 邹灵彬的博客</title>
+        <link>https://zoulingbin.github.io/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</link>
+        <description>网络编程 - Category - 邹灵彬的博客</description>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 03 Aug 2021 00:36:22 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="self" type="application/rss+xml" /><item>
+    <title>net/http标准库</title>
+    <link>https://zoulingbin.github.io/posts/nethttp/</link>
+    <pubDate>Tue, 03 Aug 2021 00:36:22 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://zoulingbin.github.io/posts/nethttp/</guid>
+    <description><![CDATA[服务端 示例代码：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28  package main import ( &#34;fmt&#34; &#34;log&#34; &#34;net/http&#34; &#34;strings&#34; ) func Hello(w http.ResponseWriter, r *http.Request) { r.ParseForm()	//解析参数，默认不解析 	fmt.Println(r.Form) fmt.Println(&#34;scheme&#34;, r.URL.Scheme) fmt.Println(&#34;path&#34;, r.URL.Path) fmt.Println(r.Form[&#34;url_long&#34;]) for k, v := range r.Form { fmt.Println(&#34;key:&#34;, k) fmt.Println(&#34;val:&#34;, strings.Join(v, &#34;&#34;)) } fmt.Fprintf(w, &#34;hello&#34;)	//输出到客户端 } func main() { http.]]></description>
+</item></channel>
+</rss>

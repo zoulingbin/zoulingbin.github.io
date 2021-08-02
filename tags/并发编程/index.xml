@@ -3,20 +3,14 @@
         <title>并发编程 - Tag - 邹灵彬的博客</title>
         <link>https://zoulingbin.github.io/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</link>
         <description>并发编程 - Tag - 邹灵彬的博客</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 23 Jul 2021 03:04:22 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" rel="self" type="application/rss+xml" /><item>
-    <title>Mutex/RWMutex注意的点</title>
-    <link>https://zoulingbin.github.io/posts/mutex%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9/</link>
-    <pubDate>Fri, 23 Jul 2021 03:04:22 &#43;0800</pubDate>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 24 Jul 2021 00:36:02 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" rel="self" type="application/rss+xml" /><item>
+    <title>WaitGroup的实现</title>
+    <link>https://zoulingbin.github.io/posts/waitgroup/</link>
+    <pubDate>Sat, 24 Jul 2021 00:36:02 &#43;0800</pubDate>
     <author>Author</author>
-    <guid>https://zoulingbin.github.io/posts/mutex%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9/</guid>
-    <description><![CDATA[Mutex需要注意的点 ]]></description>
-</item><item>
-    <title>RWMutex:读写锁的实现原理</title>
-    <link>https://zoulingbin.github.io/posts/rwmutex/</link>
-    <pubDate>Fri, 23 Jul 2021 02:38:45 &#43;0800</pubDate>
-    <author>Author</author>
-    <guid>https://zoulingbin.github.io/posts/rwmutex/</guid>
-    <description><![CDATA[鸟窝大佬的go并发编程阅读记录，RWMutex的实现原理]]></description>
+    <guid>https://zoulingbin.github.io/posts/waitgroup/</guid>
+    <description><![CDATA[WaitGroup的基本用法 WaitGroup提供了三个方法：
+1 2 3  func (wg *WaitGroup) Add(delta int) func (wg *WaitGroup) Done() func (wg *WaitGroup) Wait()    Add:用来设置WaitGroup的计数值； Done:用来将WaitGroup的计数值-1，其实就是调用了Add(-1); Wait:调用这个方法的goroutine会一直阻塞，直到WaitGroup的计数值变为0。  ]]></description>
 </item><item>
     <title>3.2 多进程编程</title>
     <link>https://zoulingbin.github.io/posts/3-2%E5%A4%9A%E8%BF%9B%E7%A8%8B%E7%BC%96%E7%A8%8B/</link>
