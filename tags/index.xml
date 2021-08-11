@@ -3,7 +3,14 @@
         <title>Tags - Tag - 邹灵彬的博客</title>
         <link>https://zoulingbin.github.io/tags/</link>
         <description>Tags - Tag - 邹灵彬的博客</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 03 Aug 2021 00:36:22 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 12 Aug 2021 00:07:11 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+    <title>gateway</title>
+    <link>https://zoulingbin.github.io/tags/gateway/</link>
+    <pubDate>Thu, 12 Aug 2021 00:07:11 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://zoulingbin.github.io/tags/gateway/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
     <title>Go</title>
     <link>https://zoulingbin.github.io/tags/go/</link>
     <pubDate>Tue, 03 Aug 2021 00:36:22 &#43;0800</pubDate>

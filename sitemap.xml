@@ -2,15 +2,17 @@
     xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xhtml="http://www.w3.org/1999/xhtml"
     ><url>
+            <loc>https://zoulingbin.github.io/tags/gateway/</loc><lastmod>2021-08-12T00:07:11&#43;08:00</lastmod></url><url>
+            <loc>https://zoulingbin.github.io/posts/kong/</loc><lastmod>2021-08-12T00:07:11&#43;08:00</lastmod></url><url>
+            <loc>https://zoulingbin.github.io/posts/</loc><lastmod>2021-08-12T00:07:11&#43;08:00</lastmod></url><url>
+            <loc>https://zoulingbin.github.io/tags/</loc><lastmod>2021-08-12T00:07:11&#43;08:00</lastmod></url><url>
+            <loc>https://zoulingbin.github.io/</loc><lastmod>2021-08-12T00:07:11&#43;08:00</lastmod></url><url>
             <loc>https://zoulingbin.github.io/categories/</loc><lastmod>2021-08-03T00:36:22&#43;08:00</lastmod></url><url>
             <loc>https://zoulingbin.github.io/tags/go/</loc><lastmod>2021-08-03T00:36:22&#43;08:00</lastmod></url><url>
             <loc>https://zoulingbin.github.io/posts/nethttp/</loc><lastmod>2021-08-03T00:36:22&#43;08:00</lastmod></url><url>
-            <loc>https://zoulingbin.github.io/posts/</loc><lastmod>2021-08-03T00:36:22&#43;08:00</lastmod></url><url>
-            <loc>https://zoulingbin.github.io/tags/</loc><lastmod>2021-08-03T00:36:22&#43;08:00</lastmod></url><url>
             <loc>https://zoulingbin.github.io/tags/%E6%A0%87%E5%87%86%E5%BA%93/</loc><lastmod>2021-08-03T00:36:22&#43;08:00</lastmod></url><url>
             <loc>https://zoulingbin.github.io/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</loc><lastmod>2021-08-03T00:36:22&#43;08:00</lastmod></url><url>
             <loc>https://zoulingbin.github.io/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</loc><lastmod>2021-08-03T00:36:22&#43;08:00</lastmod></url><url>
-            <loc>https://zoulingbin.github.io/</loc><lastmod>2021-08-03T00:36:22&#43;08:00</lastmod></url><url>
             <loc>https://zoulingbin.github.io/categories/go%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</loc><lastmod>2021-07-24T00:36:02&#43;08:00</lastmod></url><url>
             <loc>https://zoulingbin.github.io/posts/waitgroup/</loc><lastmod>2021-07-24T00:36:02&#43;08:00</lastmod></url><url>
             <loc>https://zoulingbin.github.io/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</loc><lastmod>2021-07-24T00:36:02&#43;08:00</lastmod></url><url>
