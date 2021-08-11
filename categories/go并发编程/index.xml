@@ -9,8 +9,7 @@
     <pubDate>Sat, 24 Jul 2021 00:36:02 &#43;0800</pubDate>
     <author>Author</author>
     <guid>https://zoulingbin.github.io/posts/waitgroup/</guid>
-    <description><![CDATA[WaitGroup的基本用法 WaitGroup提供了三个方法：
-1 2 3  func (wg *WaitGroup) Add(delta int) func (wg *WaitGroup) Done() func (wg *WaitGroup) Wait()    Add:用来设置WaitGroup的计数值； Done:用来将WaitGroup的计数值-1，其实就是调用了Add(-1); Wait:调用这个方法的goroutine会一直阻塞，直到WaitGroup的计数值变为0。  ]]></description>
+    <description><![CDATA[鸟窝大佬的go并发编程阅读记录，WaitGroup的实现原理]]></description>
 </item><item>
     <title>Mutex解析</title>
     <link>https://zoulingbin.github.io/posts/mutex/</link>
