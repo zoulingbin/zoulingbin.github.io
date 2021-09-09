@@ -8,9 +8,10 @@
         <title>Mutex解析 - 邹灵彬的博客</title><meta name="Description" content="鸟窝大佬的go并发编程阅读记录，从初版mutex到第四版的源码分析"><meta property="og:title" content="Mutex解析" />
 <meta property="og:description" content="鸟窝大佬的go并发编程阅读记录，从初版mutex到第四版的源码分析" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://zoulingbin.github.io/posts/mutex/" />
+<meta property="og:url" content="https://zoulingbin.github.io/posts/mutex/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2021-06-05T15:27:17+08:00" />
 <meta property="article:modified_time" content="2021-06-05T15:27:17+08:00" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Mutex解析"/>
 <meta name="twitter:description" content="鸟窝大佬的go并发编程阅读记录，从初版mutex到第四版的源码分析"/>
@@ -110,7 +111,7 @@
 <p><strong>初版的互斥锁</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -147,7 +148,7 @@
 </span><span class="lnt">35
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-go" data-lang="go">   <span class="c1">// CAS操作，当时还没有抽象出atomic包
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go">   <span class="c1">// CAS操作，当时还没有抽象出atomic包
 </span><span class="c1"></span><span class="kd">func</span> <span class="nf">cas</span><span class="p">(</span><span class="nx">val</span> <span class="o">*</span><span class="kt">int32</span><span class="p">,</span> <span class="nx">old</span><span class="p">,</span> <span class="nx">new</span> <span class="kt">int32</span><span class="p">)</span> <span class="kt">bool</span>
 <span class="kd">func</span> <span class="nf">semacquire</span><span class="p">(</span><span class="o">*</span><span class="kt">int32</span><span class="p">)</span>
 <span class="kd">func</span> <span class="nf">semrelease</span><span class="p">(</span><span class="o">*</span><span class="kt">int32</span><span class="p">)</span>
@@ -207,7 +208,7 @@
 <h3 id="第二版">第二版</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -219,7 +220,7 @@
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Mutex</span> <span class="kd">struct</span><span class="p">{</span>
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">type</span> <span class="nx">Mutex</span> <span class="kd">struct</span><span class="p">{</span>
     <span class="nx">state</span> <span class="kt">int32</span>
     <span class="nx">sema</span> <span class="kt">uint32</span>
 <span class="p">}</span>
@@ -262,7 +263,7 @@
 <p><strong>请求锁的方法 Lock实现：</strong></p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -294,7 +295,7 @@
 </span><span class="lnt">30
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Mutex</span><span class="p">)</span> <span class="nf">Lock</span><span class="p">()</span> <span class="p">{</span> 
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Mutex</span><span class="p">)</span> <span class="nf">Lock</span><span class="p">()</span> <span class="p">{</span> 
     <span class="c1">// Fast path: 能够直接获取到锁 
 </span><span class="c1"></span>    <span class="k">if</span> <span class="nx">atomic</span><span class="p">.</span><span class="nf">CompareAndSwapInt32</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">m</span><span class="p">.</span><span class="nx">state</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">mutexLocked</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">return</span> 
@@ -332,7 +333,7 @@
 <p><strong>释放锁<code>Unlock()</code>方法</strong>：</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
-<pre class="chroma"><code><span class="lnt"> 1
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
 </span><span class="lnt"> 2
 </span><span class="lnt"> 3
 </span><span class="lnt"> 4
@@ -354,7 +355,7 @@
 </span><span class="lnt">20
 </span></code></pre></td>
 <td class="lntd">
-<pre class="chroma"><code class="language-go" data-lang="go">   <span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Mutex</span><span class="p">)</span> <span class="nf">Unlock</span><span class="p">()</span> <span class="p">{</span>
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go">   <span class="kd">func</span> <span class="p">(</span><span class="nx">m</span> <span class="o">*</span><span class="nx">Mutex</span><span class="p">)</span> <span class="nf">Unlock</span><span class="p">()</span> <span class="p">{</span>
         <span class="c1">// Fast path: drop lock bit.
 </span><span class="c1"></span>        <span class="nx">new</span> <span class="o">:=</span> <span class="nx">atomic</span><span class="p">.</span><span class="nf">AddInt32</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">m</span><span class="p">.</span><span class="nx">state</span><span class="p">,</span> <span class="o">-</span><span class="nx">mutexLocked</span><span class="p">)</span> <span class="c1">//去掉锁标志
 </span><span class="c1"></span>        <span class="k">if</span> <span class="p">(</span><span class="nx">new</span><span class="o">+</span><span class="nx">mutexLocked</span><span class="p">)</span><span class="o">&amp;</span><span class="nx">mutexLocked</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">{</span> <span class="c1">//本来就没有加锁
@@ -422,7 +423,7 @@
 </div>
 </article></div>
             </main><footer class="footer">
-        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.79.0">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.88.1">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
                 </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
         </div>
     </footer></div>
