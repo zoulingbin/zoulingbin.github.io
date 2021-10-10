@@ -17,7 +17,7 @@
 <meta name="application-name" content="邹灵彬的博客">
 <meta name="apple-mobile-web-app-title" content="邹灵彬的博客"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://zoulingbin.github.io/posts/kong/" /><link rel="prev" href="https://zoulingbin.github.io/posts/nethttp/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://zoulingbin.github.io/posts/kong/" /><link rel="prev" href="https://zoulingbin.github.io/posts/nethttp/" /><link rel="next" href="https://zoulingbin.github.io/posts/gctrace/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
     {
         "@context": "http://schema.org",
         "@type": "BlogPosting",
@@ -26,7 +26,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/zoulingbin.github.io\/posts\/kong\/"
-        },"genre": "posts","keywords": "gateway","wordcount":  82 ,
+        },"genre": "posts","keywords": "gateway","wordcount":  88 ,
         "url": "https:\/\/zoulingbin.github.io\/posts\/kong\/","datePublished": "2021-08-12T00:07:11+08:00","dateModified": "2021-08-12T00:07:11+08:00","publisher": {
             "@type": "Organization",
             "name": "zoulingbin"},"author": {
@@ -76,7 +76,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">Kong使用笔记</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>zoulingbin</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-08-12">2021-08-12</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;82 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-08-12">2021-08-12</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;88 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
@@ -100,6 +100,7 @@
           </ul>
         </li>
         <li><a href="#konga">Konga</a></li>
+        <li><a href="#搭建postgresql--kong--konga">搭建postgreSQL + Kong + Konga</a></li>
       </ul>
     </li>
   </ul>
@@ -160,7 +161,9 @@ curl -i -X POST --url http://localhost:8001/services/ --data &#39;name=example-s
 <li>Service:Route -&gt; 1:n</li>
 </ul>
 <h3 id="konga">Konga</h3>
-<p><code>konga</code>是一个开源的<a href="https://github.com/pantsel/konga" target="_blank" rel="noopener noreffer">部署管理面板</a>。</p></div><div class="post-footer" id="post-footer">
+<p><code>konga</code>是一个开源的<a href="https://github.com/pantsel/konga" target="_blank" rel="noopener noreffer">部署管理面板</a>。</p>
+<h3 id="搭建postgresql--kong--konga">搭建postgreSQL + Kong + Konga</h3>
+<p>这里使用docker的方式部署，先安装</p></div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
@@ -183,7 +186,8 @@ curl -i -X POST --url http://localhost:8001/services/ --data &#39;name=example-s
         </section>
     </div>
 
-    <div class="post-nav"><a href="/posts/nethttp/" class="prev" rel="prev" title="net/http标准库"><i class="fas fa-angle-left fa-fw"></i>net/http标准库</a></div>
+    <div class="post-nav"><a href="/posts/nethttp/" class="prev" rel="prev" title="net/http标准库"><i class="fas fa-angle-left fa-fw"></i>net/http标准库</a>
+            <a href="/posts/gctrace/" class="next" rel="next" title="go trace学习记录">go trace学习记录<i class="fas fa-angle-right fa-fw"></i></a></div>
 </div>
 </article></div>
             </main><footer class="footer">

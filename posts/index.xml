@@ -3,7 +3,24 @@
         <title>All Posts - 邹灵彬的博客</title>
         <link>https://zoulingbin.github.io/posts/</link>
         <description>All Posts | 邹灵彬的博客</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 12 Aug 2021 00:07:11 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 09 Sep 2021 17:00:06 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/posts/" rel="self" type="application/rss+xml" /><item>
+    <title>pprof学习笔记</title>
+    <link>https://zoulingbin.github.io/posts/pprof/</link>
+    <pubDate>Thu, 09 Sep 2021 17:00:06 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://zoulingbin.github.io/posts/pprof/</guid>
+    <description><![CDATA[什么是pprof pprof是用于可视化和分析性能分析数据的工具，pprof以pprof.proto读取分析样本的集合，并生成报告以可书画并帮助分析数据。 而pprof.proto是一个 protobuf的描述文件，它描述了一组callstack和symbolization信息，作用是统计分析的一组采样的调用栈。 一般来说，性能分析主要关注CPU，内存，磁盘IO，网络这些指标。
+pprof有一下4种类型：
+ CPU profiling（cpu性能分析）：用于分析函数或方法的执行耗时； Memory profiling：用于分析程序的内存占用情况； Block profiling：用于记录goroutine在等待共享资源花费的时间； Mutex profiling：用于记录因为锁竞争导致的等待或延迟。  pprof的采样方式  runtime/pprof：采集程序（非 Server）的指定区块的运行数据进行分析。 net/http/pprof：基于HTTP Server运行，并且可以采集运行时数据进行分析。 go test：通过运行测试用例，并指定所需标识来进行采集。  pprof的使用 demo代码：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27  package main import ( &#34;log&#34; &#34;net/http&#34; _ &#34;net/http/pprof&#34; ) func main() { go func() { for { log.]]></description>
+</item><item>
+    <title>go trace学习记录</title>
+    <link>https://zoulingbin.github.io/posts/gctrace/</link>
+    <pubDate>Thu, 09 Sep 2021 16:49:12 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://zoulingbin.github.io/posts/gctrace/</guid>
+    <description><![CDATA[什么是go trace trace是go提供的一个工具包，包源码在 /src/internal/trace。trace可以显示go程序运行中的所有的运行时事件。]]></description>
+</item><item>
     <title>Kong使用笔记</title>
     <link>https://zoulingbin.github.io/posts/kong/</link>
     <pubDate>Thu, 12 Aug 2021 00:07:11 &#43;0800</pubDate>
@@ -16,7 +33,7 @@
     <pubDate>Tue, 03 Aug 2021 00:36:22 &#43;0800</pubDate>
     <author>Author</author>
     <guid>https://zoulingbin.github.io/posts/nethttp/</guid>
-    <description><![CDATA[net/http标准库用法记录]]></description>
+    <description><![CDATA[net/http源码解析]]></description>
 </item><item>
     <title>WaitGroup的实现</title>
     <link>https://zoulingbin.github.io/posts/waitgroup/</link>
@@ -59,12 +76,5 @@
     <author>Author</author>
     <guid>https://zoulingbin.github.io/posts/context/</guid>
     <description><![CDATA[Context是 Go 语言中非常有特色的一个特性， 其主要的作用是在 goroutine 中进行上下文的传递，而在传递信息中又包含了 goroutine 的运行控制、上下文信息传递等功能。]]></description>
-</item><item>
-    <title>Channel源码解析</title>
-    <link>https://zoulingbin.github.io/posts/channel/</link>
-    <pubDate>Mon, 31 May 2021 12:38:16 &#43;0800</pubDate>
-    <author>Author</author>
-    <guid>https://zoulingbin.github.io/posts/channel/</guid>
-    <description><![CDATA[]]></description>
 </item></channel>
 </rss>
