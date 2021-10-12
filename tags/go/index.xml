@@ -26,7 +26,7 @@ pprof有一下4种类型：
     <pubDate>Tue, 03 Aug 2021 00:36:22 &#43;0800</pubDate>
     <author>Author</author>
     <guid>https://zoulingbin.github.io/posts/nethttp/</guid>
-    <description><![CDATA[net/http标准库用法记录]]></description>
+    <description><![CDATA[net/http源码解析]]></description>
 </item><item>
     <title>WaitGroup的实现</title>
     <link>https://zoulingbin.github.io/posts/waitgroup/</link>
