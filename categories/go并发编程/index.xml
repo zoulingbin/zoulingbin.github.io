@@ -3,14 +3,7 @@
         <title>Go并发编程 - Category - 邹灵彬的博客</title>
         <link>https://zoulingbin.github.io/categories/go%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</link>
         <description>Go并发编程 - Category - 邹灵彬的博客</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 24 Jul 2021 00:36:02 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/categories/go%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" rel="self" type="application/rss+xml" /><item>
-    <title>WaitGroup的实现</title>
-    <link>https://zoulingbin.github.io/posts/waitgroup/</link>
-    <pubDate>Sat, 24 Jul 2021 00:36:02 &#43;0800</pubDate>
-    <author>Author</author>
-    <guid>https://zoulingbin.github.io/posts/waitgroup/</guid>
-    <description><![CDATA[鸟窝大佬的go并发编程阅读记录，WaitGroup的实现原理]]></description>
-</item><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 05 Jun 2021 15:27:17 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/categories/go%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/" rel="self" type="application/rss+xml" /><item>
     <title>Mutex解析</title>
     <link>https://zoulingbin.github.io/posts/mutex/</link>
     <pubDate>Sat, 05 Jun 2021 15:27:17 &#43;0800</pubDate>

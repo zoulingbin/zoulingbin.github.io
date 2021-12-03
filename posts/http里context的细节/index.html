@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>Http里context的细节 - 邹灵彬的博客</title><meta name="Description" content="net/http源码解析"><meta property="og:title" content="Http里context的细节" />
+<meta property="og:description" content="net/http源码解析" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://zoulingbin.github.io/posts/http%E9%87%8Ccontext%E7%9A%84%E7%BB%86%E8%8A%82/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-10-12T17:23:25+08:00" />
+<meta property="article:modified_time" content="2021-10-12T17:23:25+08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Http里context的细节"/>
+<meta name="twitter:description" content="net/http源码解析"/>
+<meta name="application-name" content="邹灵彬的博客">
+<meta name="apple-mobile-web-app-title" content="邹灵彬的博客"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://zoulingbin.github.io/posts/http%E9%87%8Ccontext%E7%9A%84%E7%BB%86%E8%8A%82/" /><link rel="prev" href="https://zoulingbin.github.io/posts/pprof/" /><link rel="next" href="https://zoulingbin.github.io/posts/once/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Http里context的细节",
+        "inLanguage": "zh-cn",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/zoulingbin.github.io\/posts\/http%E9%87%8Ccontext%E7%9A%84%E7%BB%86%E8%8A%82\/"
+        },"genre": "posts","keywords": "Go, 标准库, 网络编程","wordcount":  138 ,
+        "url": "https:\/\/zoulingbin.github.io\/posts\/http%E9%87%8Ccontext%E7%9A%84%E7%BB%86%E8%8A%82\/","datePublished": "2021-10-12T17:23:25+08:00","dateModified": "2021-10-12T17:23:25+08:00","publisher": {
+            "@type": "Organization",
+            "name": "zoulingbin"},"author": {
+                "@type": "Person",
+                "name": "zoulingbin"
+            },"description": "net/http源码解析"
+    }
+    </script></head>
+    <body header-desktop="" header-mobile=""><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : '' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><header class="desktop" id="header-desktop">
+    <div class="header-wrapper">
+        <div class="header-title">
+            <a href="/" title="邹灵彬的博客">邹灵彬的博客</a>
+        </div>
+        <div class="menu">
+            <div class="menu-inner"><a class="menu-item" href="/posts/"> 文章 </a><a class="menu-item" href="/tags/"> 标签 </a><a class="menu-item" href="/categories/"> 分类 </a><span class="menu-item delimiter"></span><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                    <i class="fas fa-adjust fa-fw"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</header><header class="mobile" id="header-mobile">
+    <div class="header-container">
+        <div class="header-wrapper">
+            <div class="header-title">
+                <a href="/" title="邹灵彬的博客">邹灵彬的博客</a>
+            </div>
+            <div class="menu-toggle" id="menu-toggle-mobile">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+        <div class="menu" id="menu-mobile"><a class="menu-item" href="/posts/" title="">文章</a><a class="menu-item" href="/tags/" title="">标签</a><a class="menu-item" href="/categories/" title="">分类</a><a href="javascript:void(0);" class="menu-item theme-switch" title="Switch Theme">
+                <i class="fas fa-adjust fa-fw"></i>
+            </a></div>
+    </div>
+</header>
+<div class="search-dropdown desktop">
+    <div id="search-dropdown-desktop"></div>
+</div>
+<div class="search-dropdown mobile">
+    <div id="search-dropdown-mobile"></div>
+</div>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">Http里context的细节</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>zoulingbin</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/"><i class="far fa-folder fa-fw"></i>网络编程</a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-10-12">2021-10-12</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;138 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#context是怎么产生的">Context是怎么产生的</a></li>
+        <li><a href="#context的上下游逻辑">context的上下游逻辑</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><p>在那篇<a href="https://zoulingbin.github.io/posts/nethttp/" target="_blank" rel="noopener noreffer">net/http源码解析</a>里忽略了关于context的使用细节，这篇文章详细说下这部分。</p>
+<h3 id="context是怎么产生的">Context是怎么产生的</h3>
+<p>在<code>net/http</code>源码里，第一次出现contex是在<code>serve.Serve</code>方法里。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-go" data-lang="go"><span class="kd">func</span> <span class="p">(</span><span class="nx">srv</span> <span class="o">*</span><span class="nx">Server</span><span class="p">)</span> <span class="nf">Serve</span><span class="p">(</span><span class="nx">l</span> <span class="nx">net</span><span class="p">.</span><span class="nx">Listener</span><span class="p">)</span> <span class="kt">error</span> <span class="p">{</span>
+	<span class="o">...</span>
+    <span class="o">...</span>
+	
+	<span class="nx">baseCtx</span> <span class="o">:=</span> <span class="nx">context</span><span class="p">.</span><span class="nf">Background</span><span class="p">()</span>
+	<span class="k">if</span> <span class="nx">srv</span><span class="p">.</span><span class="nx">BaseContext</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+		<span class="nx">baseCtx</span> <span class="p">=</span> <span class="nx">srv</span><span class="p">.</span><span class="nf">BaseContext</span><span class="p">(</span><span class="nx">origListener</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nx">baseCtx</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="nb">panic</span><span class="p">(</span><span class="s">&#34;BaseContext returned a nil context&#34;</span><span class="p">)</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="kd">var</span> <span class="nx">tempDelay</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Duration</span> <span class="c1">// how long to sleep on accept failure
+</span><span class="c1"></span>
+	<span class="nx">ctx</span> <span class="o">:=</span> <span class="nx">context</span><span class="p">.</span><span class="nf">WithValue</span><span class="p">(</span><span class="nx">baseCtx</span><span class="p">,</span> <span class="nx">ServerContextKey</span><span class="p">,</span> <span class="nx">srv</span><span class="p">)</span>
+	<span class="k">for</span> <span class="p">{</span>
+		<span class="nx">rw</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">l</span><span class="p">.</span><span class="nf">Accept</span><span class="p">()</span>
+		<span class="o">...</span>
+		<span class="o">...</span>
+		<span class="nx">connCtx</span> <span class="o">:=</span> <span class="nx">ctx</span>
+		<span class="k">if</span> <span class="nx">cc</span> <span class="o">:=</span> <span class="nx">srv</span><span class="p">.</span><span class="nx">ConnContext</span><span class="p">;</span> <span class="nx">cc</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="nx">connCtx</span> <span class="p">=</span> <span class="nf">cc</span><span class="p">(</span><span class="nx">connCtx</span><span class="p">,</span> <span class="nx">rw</span><span class="p">)</span>
+			<span class="k">if</span> <span class="nx">connCtx</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+				<span class="nb">panic</span><span class="p">(</span><span class="s">&#34;ConnContext returned nil&#34;</span><span class="p">)</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="nx">tempDelay</span> <span class="p">=</span> <span class="mi">0</span>
+		<span class="nx">c</span> <span class="o">:=</span> <span class="nx">srv</span><span class="p">.</span><span class="nf">newConn</span><span class="p">(</span><span class="nx">rw</span><span class="p">)</span>
+		<span class="nx">c</span><span class="p">.</span><span class="nf">setState</span><span class="p">(</span><span class="nx">c</span><span class="p">.</span><span class="nx">rwc</span><span class="p">,</span> <span class="nx">StateNew</span><span class="p">,</span> <span class="nx">runHooks</span><span class="p">)</span> <span class="c1">// before Serve can return
+</span><span class="c1"></span>		<span class="k">go</span> <span class="nx">c</span><span class="p">.</span><span class="nf">serve</span><span class="p">(</span><span class="nx">connCtx</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>从源码里看到，context是从<code>baseCtx := context.Background()</code>产生的。</p>
+<h3 id="context的上下游逻辑">context的上下游逻辑</h3></div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2021-10-12</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/go/">Go</a>,&nbsp;<a href="/tags/%E6%A0%87%E5%87%86%E5%BA%93/">标准库</a>,&nbsp;<a href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav"><a href="/posts/pprof/" class="prev" rel="prev" title="pprof学习笔记"><i class="fas fa-angle-left fa-fw"></i>pprof学习笔记</a>
+            <a href="/posts/once/" class="next" rel="next" title="Once">Once<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.89.4">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span></div>
+        </div>
+    </footer></div>
+
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
+</html>

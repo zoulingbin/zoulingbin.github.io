@@ -3,12 +3,33 @@
         <title>Tags - Tag - 邹灵彬的博客</title>
         <link>https://zoulingbin.github.io/tags/</link>
         <description>Tags - Tag - 邹灵彬的博客</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 09 Sep 2021 17:00:06 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 03 Dec 2021 17:10:32 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/tags/" rel="self" type="application/rss+xml" /><item>
     <title>Go</title>
     <link>https://zoulingbin.github.io/tags/go/</link>
-    <pubDate>Thu, 09 Sep 2021 17:00:06 &#43;0800</pubDate>
+    <pubDate>Fri, 03 Dec 2021 17:10:32 &#43;0800</pubDate>
     <author>Author</author>
     <guid>https://zoulingbin.github.io/tags/go/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>并发编程</title>
+    <link>https://zoulingbin.github.io/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</link>
+    <pubDate>Fri, 03 Dec 2021 17:10:32 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://zoulingbin.github.io/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>标准库</title>
+    <link>https://zoulingbin.github.io/tags/%E6%A0%87%E5%87%86%E5%BA%93/</link>
+    <pubDate>Tue, 12 Oct 2021 17:23:25 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://zoulingbin.github.io/tags/%E6%A0%87%E5%87%86%E5%BA%93/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>网络编程</title>
+    <link>https://zoulingbin.github.io/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</link>
+    <pubDate>Tue, 12 Oct 2021 17:23:25 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://zoulingbin.github.io/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>go cmd</title>
@@ -32,46 +53,11 @@
     <guid>https://zoulingbin.github.io/tags/gateway/</guid>
     <description><![CDATA[]]></description>
 </item><item>
-    <title>标准库</title>
-    <link>https://zoulingbin.github.io/tags/%E6%A0%87%E5%87%86%E5%BA%93/</link>
-    <pubDate>Tue, 03 Aug 2021 00:36:22 &#43;0800</pubDate>
-    <author>Author</author>
-    <guid>https://zoulingbin.github.io/tags/%E6%A0%87%E5%87%86%E5%BA%93/</guid>
-    <description><![CDATA[]]></description>
-</item><item>
-    <title>网络编程</title>
-    <link>https://zoulingbin.github.io/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</link>
-    <pubDate>Tue, 03 Aug 2021 00:36:22 &#43;0800</pubDate>
-    <author>Author</author>
-    <guid>https://zoulingbin.github.io/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</guid>
-    <description><![CDATA[]]></description>
-</item><item>
-    <title>并发编程</title>
-    <link>https://zoulingbin.github.io/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</link>
-    <pubDate>Sat, 24 Jul 2021 00:36:02 &#43;0800</pubDate>
-    <author>Author</author>
-    <guid>https://zoulingbin.github.io/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</guid>
-    <description><![CDATA[]]></description>
-</item><item>
     <title>阅读笔记</title>
     <link>https://zoulingbin.github.io/tags/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</link>
     <pubDate>Tue, 29 Jun 2021 17:59:58 &#43;0800</pubDate>
     <author>Author</author>
     <guid>https://zoulingbin.github.io/tags/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</guid>
-    <description><![CDATA[]]></description>
-</item><item>
-    <title>TCP</title>
-    <link>https://zoulingbin.github.io/tags/tcp/</link>
-    <pubDate>Mon, 28 Jun 2021 16:38:45 &#43;0800</pubDate>
-    <author>Author</author>
-    <guid>https://zoulingbin.github.io/tags/tcp/</guid>
-    <description><![CDATA[]]></description>
-</item><item>
-    <title>网络协议</title>
-    <link>https://zoulingbin.github.io/tags/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/</link>
-    <pubDate>Mon, 28 Jun 2021 16:38:45 &#43;0800</pubDate>
-    <author>Author</author>
-    <guid>https://zoulingbin.github.io/tags/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/</guid>
     <description><![CDATA[]]></description>
 </item></channel>
 </rss>
