@@ -27,7 +27,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/zoulingbin.github.io\/posts\/http%E9%87%8Ccontext%E7%9A%84%E7%BB%86%E8%8A%82\/"
-        },"genre": "posts","keywords": "Go, 标准库, 网络编程","wordcount":  138 ,
+        },"genre": "posts","keywords": "Go, 标准库, 网络编程","wordcount":  143 ,
         "url": "https:\/\/zoulingbin.github.io\/posts\/http%E9%87%8Ccontext%E7%9A%84%E7%BB%86%E8%8A%82\/","datePublished": "2021-10-12T17:23:25+08:00","dateModified": "2021-10-12T17:23:25+08:00","publisher": {
             "@type": "Organization",
             "name": "zoulingbin"},"author": {
@@ -77,7 +77,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">Http里context的细节</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>zoulingbin</a></span>&nbsp;<span class="post-category">included in <a href="/categories/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/"><i class="far fa-folder fa-fw"></i>网络编程</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-10-12">2021-10-12</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;138 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2021-10-12">2021-10-12</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;143 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
@@ -88,6 +88,7 @@
   <ul>
     <li>
       <ul>
+        <li><a href="#context标准库的设计思路">context标准库的设计思路</a></li>
         <li><a href="#context是怎么产生的">Context是怎么产生的</a></li>
         <li><a href="#context的上下游逻辑">context的上下游逻辑</a></li>
       </ul>
@@ -95,6 +96,13 @@
   </ul>
 </nav></div>
             </div><div class="content" id="content"><p>在那篇<a href="https://zoulingbin.github.io/posts/nethttp/" target="_blank" rel="noopener noreffer">net/http源码解析</a>里忽略了关于context的使用细节，这篇文章详细说下这部分。</p>
+<h3 id="context标准库的设计思路">context标准库的设计思路</h3>
+<p>在标准库里，<code>context</code>的实现是一个树形结构，在整个树形逻辑链条里，用上下文控制，实现每个节点的信息传递和共享。
+在树形逻辑链条里，一个节点拥有两个角色，分别是下游树的管理者，上游树的被管理者。因为需要有对应的两个能力：</p>
+<ul>
+<li>让整个下游树结束的能力：<code>CancelFunc()</code></li>
+<li>在上游树结束的时候被通知的能力：<code>Done()</code></li>
+</ul>
 <h3 id="context是怎么产生的">Context是怎么产生的</h3>
 <p>在<code>net/http</code>源码里，第一次出现contex是在<code>serve.Serve</code>方法里。</p>
 <div class="highlight"><div class="chroma">
@@ -192,7 +200,7 @@
     </div>
 
     <div class="post-nav"><a href="/posts/pprof/" class="prev" rel="prev" title="pprof学习笔记"><i class="fas fa-angle-left fa-fw"></i>pprof学习笔记</a>
-            <a href="/posts/once/" class="next" rel="next" title="Once">Once<i class="fas fa-angle-right fa-fw"></i></a></div>
+            <a href="/posts/once/" class="next" rel="next" title="Once的用法与实现">Once的用法与实现<i class="fas fa-angle-right fa-fw"></i></a></div>
 </div>
 </article></div>
             </main><footer class="footer">
