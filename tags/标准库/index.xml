@@ -3,14 +3,7 @@
         <title>标准库 - Tag - 邹灵彬的博客</title>
         <link>https://zoulingbin.github.io/tags/%E6%A0%87%E5%87%86%E5%BA%93/</link>
         <description>标准库 - Tag - 邹灵彬的博客</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 12 Oct 2021 17:23:25 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/tags/%E6%A0%87%E5%87%86%E5%BA%93/" rel="self" type="application/rss+xml" /><item>
-    <title>Http里context的细节</title>
-    <link>https://zoulingbin.github.io/posts/http%E9%87%8Ccontext%E7%9A%84%E7%BB%86%E8%8A%82/</link>
-    <pubDate>Tue, 12 Oct 2021 17:23:25 &#43;0800</pubDate>
-    <author>Author</author>
-    <guid>https://zoulingbin.github.io/posts/http%E9%87%8Ccontext%E7%9A%84%E7%BB%86%E8%8A%82/</guid>
-    <description><![CDATA[net/http源码解析]]></description>
-</item><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 03 Aug 2021 00:36:22 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/tags/%E6%A0%87%E5%87%86%E5%BA%93/" rel="self" type="application/rss+xml" /><item>
     <title>net/http标准库</title>
     <link>https://zoulingbin.github.io/posts/nethttp/</link>
     <pubDate>Tue, 03 Aug 2021 00:36:22 &#43;0800</pubDate>

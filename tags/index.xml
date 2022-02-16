@@ -3,7 +3,28 @@
         <title>Tags - Tag - 邹灵彬的博客</title>
         <link>https://zoulingbin.github.io/tags/</link>
         <description>Tags - Tag - 邹灵彬的博客</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 03 Dec 2021 17:10:32 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 16 Feb 2022 17:44:25 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+    <title>rpc</title>
+    <link>https://zoulingbin.github.io/tags/rpc/</link>
+    <pubDate>Wed, 16 Feb 2022 17:44:25 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://zoulingbin.github.io/tags/rpc/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>极客</title>
+    <link>https://zoulingbin.github.io/tags/%E6%9E%81%E5%AE%A2/</link>
+    <pubDate>Wed, 16 Feb 2022 17:44:25 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://zoulingbin.github.io/tags/%E6%9E%81%E5%AE%A2/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>阅读笔记</title>
+    <link>https://zoulingbin.github.io/tags/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</link>
+    <pubDate>Wed, 16 Feb 2022 17:44:25 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://zoulingbin.github.io/tags/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
     <title>Go</title>
     <link>https://zoulingbin.github.io/tags/go/</link>
     <pubDate>Fri, 03 Dec 2021 17:10:32 &#43;0800</pubDate>
@@ -16,20 +37,6 @@
     <pubDate>Fri, 03 Dec 2021 17:10:32 &#43;0800</pubDate>
     <author>Author</author>
     <guid>https://zoulingbin.github.io/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</guid>
-    <description><![CDATA[]]></description>
-</item><item>
-    <title>标准库</title>
-    <link>https://zoulingbin.github.io/tags/%E6%A0%87%E5%87%86%E5%BA%93/</link>
-    <pubDate>Tue, 12 Oct 2021 17:23:25 &#43;0800</pubDate>
-    <author>Author</author>
-    <guid>https://zoulingbin.github.io/tags/%E6%A0%87%E5%87%86%E5%BA%93/</guid>
-    <description><![CDATA[]]></description>
-</item><item>
-    <title>网络编程</title>
-    <link>https://zoulingbin.github.io/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</link>
-    <pubDate>Tue, 12 Oct 2021 17:23:25 &#43;0800</pubDate>
-    <author>Author</author>
-    <guid>https://zoulingbin.github.io/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</guid>
     <description><![CDATA[]]></description>
 </item><item>
     <title>go cmd</title>
@@ -53,11 +60,18 @@
     <guid>https://zoulingbin.github.io/tags/gateway/</guid>
     <description><![CDATA[]]></description>
 </item><item>
-    <title>阅读笔记</title>
-    <link>https://zoulingbin.github.io/tags/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</link>
-    <pubDate>Tue, 29 Jun 2021 17:59:58 &#43;0800</pubDate>
+    <title>标准库</title>
+    <link>https://zoulingbin.github.io/tags/%E6%A0%87%E5%87%86%E5%BA%93/</link>
+    <pubDate>Tue, 03 Aug 2021 00:36:22 &#43;0800</pubDate>
     <author>Author</author>
-    <guid>https://zoulingbin.github.io/tags/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</guid>
+    <guid>https://zoulingbin.github.io/tags/%E6%A0%87%E5%87%86%E5%BA%93/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>网络编程</title>
+    <link>https://zoulingbin.github.io/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</link>
+    <pubDate>Tue, 03 Aug 2021 00:36:22 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://zoulingbin.github.io/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</guid>
     <description><![CDATA[]]></description>
 </item></channel>
 </rss>

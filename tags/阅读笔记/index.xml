@@ -3,7 +3,14 @@
         <title>阅读笔记 - Tag - 邹灵彬的博客</title>
         <link>https://zoulingbin.github.io/tags/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</link>
         <description>阅读笔记 - Tag - 邹灵彬的博客</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 29 Jun 2021 17:59:58 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/tags/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="self" type="application/rss+xml" /><item>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 16 Feb 2022 17:44:25 &#43;0800</lastBuildDate><atom:link href="https://zoulingbin.github.io/tags/%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" rel="self" type="application/rss+xml" /><item>
+    <title>RPC实战与核心原理（一）</title>
+    <link>https://zoulingbin.github.io/posts/rpc1/</link>
+    <pubDate>Wed, 16 Feb 2022 17:44:25 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://zoulingbin.github.io/posts/rpc1/</guid>
+    <description><![CDATA[《RPC实战与核心原理》阅读笔记（一）]]></description>
+</item><item>
     <title>3.2 多进程编程</title>
     <link>https://zoulingbin.github.io/posts/3-2%E5%A4%9A%E8%BF%9B%E7%A8%8B%E7%BC%96%E7%A8%8B/</link>
     <pubDate>Tue, 29 Jun 2021 17:59:58 &#43;0800</pubDate>

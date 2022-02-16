@@ -3,22 +3,22 @@
         <title>邹灵彬的博客</title>
         <link>https://zoulingbin.github.io/</link>
         <description>邹灵彬的博客</description>
-        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 03 Dec 2021 17:10:32 &#43;0800</lastBuildDate>
+        <generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Wed, 16 Feb 2022 17:44:25 &#43;0800</lastBuildDate>
             <atom:link href="https://zoulingbin.github.io/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>RPC实战与核心原理（一）</title>
+    <link>https://zoulingbin.github.io/posts/rpc1/</link>
+    <pubDate>Wed, 16 Feb 2022 17:44:25 &#43;0800</pubDate>
+    <author>Author</author>
+    <guid>https://zoulingbin.github.io/posts/rpc1/</guid>
+    <description><![CDATA[《RPC实战与核心原理》阅读笔记（一）]]></description>
+</item><item>
     <title>Once的用法与实现</title>
     <link>https://zoulingbin.github.io/posts/once/</link>
     <pubDate>Fri, 03 Dec 2021 17:10:32 &#43;0800</pubDate>
     <author>Author</author>
     <guid>https://zoulingbin.github.io/posts/once/</guid>
     <description><![CDATA[sync.Once用法记录]]></description>
-</item><item>
-    <title>Http里context的细节</title>
-    <link>https://zoulingbin.github.io/posts/http%E9%87%8Ccontext%E7%9A%84%E7%BB%86%E8%8A%82/</link>
-    <pubDate>Tue, 12 Oct 2021 17:23:25 &#43;0800</pubDate>
-    <author>Author</author>
-    <guid>https://zoulingbin.github.io/posts/http%E9%87%8Ccontext%E7%9A%84%E7%BB%86%E8%8A%82/</guid>
-    <description><![CDATA[net/http源码解析]]></description>
 </item><item>
     <title>pprof学习笔记</title>
     <link>https://zoulingbin.github.io/posts/pprof/</link>
