@@ -27,7 +27,7 @@
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https:\/\/zoulingbin.github.io\/posts\/raft\/"
-        },"genre": "posts","keywords": "分布式, 算法","wordcount":  17 ,
+        },"genre": "posts","keywords": "分布式, 算法","wordcount":  37 ,
         "url": "https:\/\/zoulingbin.github.io\/posts\/raft\/","datePublished": "2022-02-23T11:58:15+08:00","dateModified": "2022-02-23T11:58:15+08:00","publisher": {
             "@type": "Organization",
             "name": "zoulingbin"},"author": {
@@ -77,7 +77,7 @@
             <div class="toc-content" id="toc-content-auto"></div>
         </div><article class="page single"><h1 class="single-title animated flipInX">Raft算法原理</h1><div class="post-meta">
             <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i>zoulingbin</a></span></div>
-            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-02-23">2022-02-23</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;17 words&nbsp;
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2022-02-23">2022-02-23</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;37 words&nbsp;
                 <i class="far fa-clock fa-fw"></i>&nbsp;One minute&nbsp;</div>
         </div><div class="details toc" id="toc-static"  kept="">
                 <div class="details-summary toc-title">
@@ -91,6 +91,7 @@
         <li><a href="#raft算法概述">Raft算法概述</a></li>
       </ul>
     </li>
+    <li><a href="#reference">Reference</a></li>
   </ul>
 </nav></div>
             </div><div class="content" id="content"><h2 id="算法的基本流程">算法的基本流程</h2>
@@ -104,8 +105,20 @@ Raft算法由leader节点来处理一致性问题。</p>
 <ul>
 <li><strong>Leader election</strong> leader选举：有且仅有一个leader节点，如果leader宕机，通过选举机制选出新的leader；</li>
 <li><strong>Log replication</strong> 日志复制：leader从客户端接收数据更新/删除请求，然后日志复制到follower节点，从而保证集群数据的一致性；</li>
-<li><strong>Safety</strong> 安全性：如果某个节点已经将一条提交过的数据输入raft状态机执行了，那么其它节点不可能再将相同索引 的另一条日志数据输入到raft状态机中执行。</li>
-</ul></div><div class="post-footer" id="post-footer">
+<li><strong>Safety</strong> 安全性：如果某个节点已经将一条提交过的数据输入raft状态机执行了，那么其它节点不可能再将相同索引的另一条日志数据输入到raft状态机中执行。</li>
+</ul>
+<p><code>raft</code>算法需要一直保持这几个属性：</p>
+<ul>
+<li><strong>Election Safety</strong> 选举安全性：在一个任期内只能存在最多一个leader节点；</li>
+<li><strong>Leader Append-Only</strong> Leader节点上的日志为只添加：leader节点永远不会删除或者覆盖本节点上面的日志数据，leader节点上写日志的操作只可能是添加操作；</li>
+<li><strong>Log Matching</strong> 日志匹配性：如果两个节点上的日志，在日志的某个索引上的日志数据其对应的任期号相同，那么在两个节点在这条日志之前的日志数据完全匹配。</li>
+<li><strong>Leader Completeness</strong> leader完备：如果一条日志在某个任期被提交，那么这条日志数据在leader节点上更高任期号的日志数据中都存在。</li>
+<li><strong>State Machine Safety</strong> 状态机安全性：如果某个节点已经将一条提交过的数据输入raft状态机执行了，那么其它节点不可能再将相同索引的另一条日志数据输入到raft状态机中执行。</li>
+</ul>
+<h2 id="reference">Reference</h2>
+<p><a href="https://shuwoom.com/?p=826" target="_blank" rel="noopener noreffer">https://shuwoom.com/?p=826</a></p>
+<p><a href="http://dockone.io/article/2434665" target="_blank" rel="noopener noreffer">http://dockone.io/article/2434665</a></p>
+<p><a href="https://www.codedump.info/post/20180921-raft/" target="_blank" rel="noopener noreffer">https://www.codedump.info/post/20180921-raft/</a></p></div><div class="post-footer" id="post-footer">
     <div class="post-info">
         <div class="post-info-line">
             <div class="post-info-mod">
